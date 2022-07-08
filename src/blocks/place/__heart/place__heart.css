@@ -1,0 +1,7 @@
+.place__heart {
+  transition: opacity .2s linear;
+}
+
+.place__heart:hover {
+  opacity: .5;
+}

@@ -1,0 +1,7 @@
+.popup__item-error {
+  display: block;
+  color: #ff0000;
+  margin-bottom: 13px;
+  margin-top: 5px;
+  font: 400 12px/15px 'Inter';
+}

@@ -1,0 +1,22 @@
+.profile__title {
+  margin: 22px 19px 8px 0;
+  font: 500 42px/48px 'Inter',sans-serif;
+  text-overflow: ellipsis;
+  max-width: 294px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@media  screen and (max-width: 899px) {
+  .profile__title {
+    font: 500 27px/33px 'Inter',sans-serif;
+    margin: 25px 18px 15px 0;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .profile__title {
+    max-width: 189px;
+    margin: 26px 10px 7px 66px;
+  }
+}

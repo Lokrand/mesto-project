@@ -1,0 +1,13 @@
+.popup__close-cross {
+  position: relative;
+  left: -6px;
+  top: -2px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+  .popup__close-cross {
+    width: 20px;
+    height: 20px;
+  }
+}

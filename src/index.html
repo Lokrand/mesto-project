@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mesto</title>
+</head>
+<body class="body">
+  <div class="page">
+    <header class="header">
+      <img src="<%=require('./images/header/header__logo.svg')%>" alt="Логотип Mesto Russia" class="header__logo">
+    </header>
+    <main id="container">
+      <section class="profile">
+        <img src="<%=require('./images/profile/avatar.jpg')%>" alt="Аватар пользователя" class="profile__avatar">
+        <div>
+          <div class="profile__block">
+            <h1 class="profile__title">Жак-Ив Кусто</h1>
+            <button type="button" class="profile__button-edit">
+              <img src="<%=require('./images/profile/vector.svg')%>" alt="Кнопка редактирования профиля" class="profile__image">
+            </button>
+          </div>
+          <p class="profile__subtitle">Исследователь океана</p>
+        </div>
+        <button type="button" class="profile__button">
+          <img src="<%=require('./images/profile/profile_plus.svg')%>" alt="Кнопка добавления" class="profile__plus">p
+        </button>
+      </section>
+      <section class="places">
+        <template id="mesto">
+          <article class="place">
+            <img src="" id="place_image" alt="" class="place__image">
+            <button type="button" class="place__delete">
+              <img src="<%=require('./images/places/Group.svg')%>" alt="удаление картинки" class="place__delete-img">
+            </button>
+            <div class="place__content">
+              <h2 class="place__title">Гора Эльбрус</h2>
+              <button type="button" class="place__button">
+                <img src="<%=require('./images/places/heart.svg')%>" alt="Кнопка в форме сердечка" class="place__heart">
+              </button>
+            </div>
+          </article>
+        </template>
+      </section>
+    </main>
+    <footer class="footer">
+      <p class="footer__text">&copy; 2022 Mesto Russia</p>
+    </footer>
+  </div>
+<!-- ----------------------------------------------Popup edit/create/view profile---------------------------------------------- -->
+  <div class="popup">          <!-- popup_opened -> открыть попап -->
+    <div class="popup__container">
+      <h2 class="popup__title">Редактировать профиль</h2>
+      <form name="profile-edit" id="editProfile" class="popup__body" novalidate>
+        <fieldset id="create-profile-fieldset" class="popup__set">
+          <input name="login-name" id="login-name" type="text" class="popup__item" placeholder="Имя пользователя" minlength="2" maxlength="40" required>
+          <span class="login-name-error popup__item-error"></span>
+          <input name="login-content" id="login-content" type="text" class="popup__item" placeholder="Профессия" minlength="2" maxlength="200" required>
+          <span class="login-content-error popup__item-error"></span>
+          <button type="submit" id="submit" class="popup__button">Сохранить</button>
+        </fieldset>
+      </form>
+      <button type="button" class="popup__close"><img src="<%=require('./images/popup/close-icon.svg')%>" alt="Крестик" class="popup__close-cross"></button>
+    </div>
+  </div>
+  <div id="popup__create" class="popup">          <!-- popup_opened -> открыть попап -->
+    <div class="popup__container" id="popup-create-container">
+      <h2 class="popup__title">Новое место</h2>
+      <form name="profile-new-place" id="profileNewPlace" class="popup__body">
+        <fieldset id="newPlace-fieldset" class="popup__set">
+          <input name="place-name" id="place-title" type="text" class="popup__item" placeholder="Название" minlength="2" maxlength="30" required>
+          <span class="place-title-error popup__item-error"></span>
+          <input name="place-content" id="place-content" type="url" class="popup__item" placeholder="Ссылка на картинку" required>
+          <span class="place-content-error popup__item-error"></span>
+          <button type="submit" id="newPlace" class="popup__button popup__button_disabled">Создать</button>
+        </fieldset>
+      </form>
+      <button type="button" id="close_edit" class="popup__close"><img src="<%=require('./images/popup/close-icon.svg')%>" alt="Крестик" class="popup__close-cross"></button>
+    </div>
+  </div>
+  <div class="popup" id="popup_view">
+    <div class="popup__view">
+      <img src="" alt="" class="popup__content">
+      <p class="popup__text"></p>          <!-- popup_opened -> открыть попап -->
+      <button type="button" id="close_view" class="popup__close"><img src="<%=require('./images/popup/close-icon.svg')%>" alt="Крестик" class="popup__close-cross"></button>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,15 @@
+.place__delete {
+  position: absolute;
+  top: 19px;
+  right: 26px;
+  height: 19px;
+  width: 18px;
+  background-color: inherit;
+  border: none;
+  transition: opacity .2s linear;
+  cursor: pointer;
+}
+
+.place__delete:hover {
+  opacity: .6;
+}

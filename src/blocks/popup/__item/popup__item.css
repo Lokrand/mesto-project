@@ -1,0 +1,27 @@
+.popup__item {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,.2);
+  padding: 0;
+  padding-bottom: 9px;
+  font: 400 14px/17px 'Inter',sans-serif;
+}
+
+.popup__item:first-child {
+  margin-bottom: 30px;
+}
+
+.popup__item::placeholder {
+  color: #000;
+}
+
+input[type="text"]::-webkit-input-placeholder {
+  color: #C4C4C4;
+}
+input[type="url"]::-webkit-input-placeholder {
+  color: #C4C4C4;
+}
+
+.popup__item:invalid {
+
+}

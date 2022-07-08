@@ -1,0 +1,15 @@
+.profile {
+  width: 100%;
+  position: relative;
+  display: flex;
+  margin: 40px 0 51px;
+  color: #fff;
+}
+
+@media screen and (max-width: 600px) {
+  .profile {
+    margin: 42px 0 36px;
+    flex-direction: column;
+  }
+}
+

@@ -1,0 +1,12 @@
+.popup__title {
+  margin: 0;
+  margin: 0 0 48px;
+  font: 900 24px/29px 'Inter';
+}
+
+@media screen and (max-width: 600px) {
+  .popup__title {
+    margin-bottom: 75px;
+    font: 900 18px/22px 'Inter',sans-serif;
+  }
+}

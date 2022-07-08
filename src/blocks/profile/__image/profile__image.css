@@ -1,0 +1,14 @@
+.profile__image {
+  width: 10px;
+  height: 10px;
+  padding: 6px;
+  border: 1px solid #fff;
+}
+
+@media screen and (max-width: 899px) {
+  .profile__image {
+    width: 8px;
+    height: 8px;
+    padding: 4px;
+  }
+}

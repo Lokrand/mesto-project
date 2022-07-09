@@ -1,31 +1,13 @@
-import { closePopup } from "./utils";
-const profileEdit = document.querySelector('.popup')
-const popupCreate = document.querySelector('#popup__create')
-const popupView = document.querySelector('#popup_view')
-const profileTitle = document.querySelector('.profile__title');
-const profileContent = document.querySelector('.profile__subtitle');
-const formProfileEdit = document.querySelector('#editProfile');
-const nameInput = formProfileEdit.querySelector('#login-name');
-const jobInput = formProfileEdit.querySelector('#login-content');
+import { closePopup } from "./utils/utils";
 
-const onClickOutside = (e) => {
-  if (!e.composedPath().includes(document.querySelector('.popup__container'))) {
-    closePopup(profileEdit)
+export const closeByClickOnEsc = (evt) => {
+  if (evt.code === "Escape") {
+    closePopup(document.querySelector('.popup_opened'));
   }
-  if (!e.composedPath().includes(document.querySelector('#popup-create-container'))) {
-    closePopup(popupCreate)
-  }
-  if (!e.composedPath().includes(document.querySelector('.popup__view'))) {
-    closePopup(popupView)
-  }
-};
-// заполняем имя профиля и профессию
-function handleProfileFormSubmit (evt) {
-  evt.preventDefault();
-  profileTitle.textContent = nameInput.value;
-  profileContent.textContent = jobInput.value;
-  closePopup(profileEdit);
 }
-
-export { handleProfileFormSubmit, closePopup, onClickOutside, nameInput, jobInput, formProfileEdit,
-profileEdit, popupCreate, popupView, profileTitle, profileContent}
+export const onClickOutside = (evt) => {
+  console.log( evt.target)
+  if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-cross')) {
+    closePopup(document.querySelector('.popup_opened'))
+  };
+};

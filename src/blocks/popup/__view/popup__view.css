@@ -3,4 +3,5 @@
   flex-direction: column;
   position: relative;
   row-gap: 10px;
+  cursor: auto;
 }

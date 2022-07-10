@@ -1,49 +1,24 @@
-import { openPopup } from "./utils/utils";
+import { openPopup } from "./modal";
 import {
   popupImg,
   popupText,
   mestoTemplate,
   popupView,
 } from "./utils/constants";
-export const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
 
-export function createCard(name, link) {
+export function createCard(name, link, counter) {
   const userElement = mestoTemplate.cloneNode(true);
-  getTemplate(name, link, userElement);
+  getTemplate(name, link, userElement, counter);
   addLikeButton(userElement);
   addDeleteButton(userElement);
   renderViewBlock(userElement, name, link);
   return userElement;
 }
-function getTemplate (name, link, userElement) {
+function getTemplate (name, link, userElement, counter) {
   userElement.querySelector(".place__image").src = link;
   userElement.querySelector(".place__image").alt = name;
   userElement.querySelector(".place__title").textContent = name;
+  userElement.querySelector(".place__counter").textContent = counter;
   return userElement;
 }
 function addLikeButton(templateEl) {

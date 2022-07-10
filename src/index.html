@@ -13,15 +13,15 @@
     </header>
     <main id="container">
       <section class="profile">
-        <img src="<%=require('./images/profile/avatar.jpg')%>" alt="Аватар пользователя" class="profile__avatar">
+        <img src="" alt="Аватар пользователя" class="profile__avatar">
         <div>
           <div class="profile__block">
-            <h1 class="profile__title">Жак-Ив Кусто</h1>
+            <h1 class="profile__title"></h1>
             <button type="button" class="profile__button-edit">
               <img src="<%=require('./images/profile/vector.svg')%>" alt="Кнопка редактирования профиля" class="profile__image">
             </button>
           </div>
-          <p class="profile__subtitle">Исследователь океана</p>
+          <p class="profile__subtitle"></p>
         </div>
         <button type="button" class="profile__button">
           <img src="<%=require('./images/profile/profile_plus.svg')%>" alt="Кнопка добавления" class="profile__plus">p
@@ -36,9 +36,12 @@
             </button>
             <div class="place__content">
               <h2 class="place__title">Гора Эльбрус</h2>
-              <button type="button" class="place__button">
-                <img src="<%=require('./images/places/heart.svg')%>" alt="Кнопка в форме сердечка" class="place__heart">
-              </button>
+              <div>
+                <button type="button" class="place__button">
+                  <img src="<%=require('./images/places/heart.svg')%>" alt="Кнопка в форме сердечка" class="place__heart">
+                </button>
+                <p class="place__counter"></p>
+              </div>
             </div>
           </article>
         </template>

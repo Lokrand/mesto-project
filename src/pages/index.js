@@ -1,6 +1,6 @@
 import "./index.css";
-import { openPopup, closePopup } from "../components/utils/utils";
-import { createCard, initialCards } from "../components/card";
+import { openPopup, closePopup } from "../components/modal";
+import { createCard } from "../components/card";
 import { setEventListeners } from "../components/validate";
 import {
   openEdit,
@@ -17,14 +17,39 @@ import {
   popupCreate,
   profileTitle,
   profileContent,
+  profileAvatar,
 } from "../components/utils/constants";
 
-initialCards.reverse().forEach((el) => {
-  renderCard(el.name, el.link);
-});
+import { getCards, getProfileData, sendCardsRequest, sendProfileRequest } from "../components/api"
 
-function renderCard(name, link) {
-  places.prepend(createCard(name, link));
+getProfileData().then((data) => {
+  profileTitle.textContent = data.name;
+  profileContent.textContent = data.about;
+  profileAvatar.src = data.avatar;
+})
+
+getCards().then((data) => {
+  data.reverse().forEach((el) => {
+    renderCard(el.name, el.link, el.likes.length)
+  })
+})
+
+// заполняем имя профиля и профессию
+function handleProfileFormSubmit (evt) {
+  evt.preventDefault();
+  profileTitle.textContent = nameInput.value;
+  profileContent.textContent = jobInput.value;
+  sendProfileRequest(nameInput.value, jobInput.value).then((res) => {
+    if(res.status > 399) {
+      throw new Error('Failed to change profile data');
+    }
+    return res.json();
+  })
+  closePopup(profileEdit);
+}
+
+function renderCard(name, link, counter) {
+  places.prepend(createCard(name, link, counter));
 }
 
 const enableValidation = (formData) => {
@@ -42,6 +67,12 @@ formAddCard.addEventListener("submit", (event) => {
   event.preventDefault();
   const placeName = placeTitle.value;
   const placeCnt = placeContent.value;
+  sendCardsRequest(placeName, placeCnt).then((res) => {
+    if(res.status > 399) {
+      throw new Error('Failed to change cards data')
+    }
+    return res.json();
+  })
   renderCard(placeName, placeCnt);
   closePopup(popupCreate);
 });
@@ -61,10 +92,4 @@ profileButton.addEventListener("click", () => {
   enableValidation(validatorConfig);
 });
 
-// заполняем имя профиля и профессию
-function handleProfileFormSubmit (evt) {
-  evt.preventDefault();
-  profileTitle.textContent = nameInput.value;
-  profileContent.textContent = jobInput.value;
-  closePopup(profileEdit);
-}
+

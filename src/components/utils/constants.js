@@ -7,6 +7,7 @@ export const profileEdit = document.querySelector('.popup');
 export const popupCreate = document.querySelector('#popup__create');
 export const profileTitle = document.querySelector('.profile__title');
 export const profileContent = document.querySelector('.profile__subtitle');
+export const profileAvatar = document.querySelector('.profile__avatar')
 export const formProfileEdit = document.querySelector('#editProfile');
 export const nameInput = formProfileEdit.querySelector('#login-name');
 export const jobInput = formProfileEdit.querySelector('#login-content');

@@ -1,17 +1,23 @@
-import { openPopup } from "./modal";
+import { closePopup, openPopup } from "./modal";
 import {
   popupImg,
   popupText,
   mestoTemplate,
   popupView,
+  popupDeleteCard,
+  deleteCardButton
 } from "./utils/constants";
+import { isMyCard } from "../pages/index";
 
-export function createCard(name, link, counter) {
+export function createCard(name, link, counter, cardId) {
   const userElement = mestoTemplate.cloneNode(true);
   getTemplate(name, link, userElement, counter);
   addLikeButton(userElement);
-  addDeleteButton(userElement);
   renderViewBlock(userElement, name, link);
+  if (isMyCard()) {
+    addDeleteButton(userElement);
+
+  }
   return userElement;
 }
 function getTemplate (name, link, userElement, counter) {
@@ -29,8 +35,13 @@ function addLikeButton(templateEl) {
 }
 function addDeleteButton(templateEl) {
   const deleteBut = templateEl.querySelector(".place__delete");
+  deleteBut.classList.remove('place__delete_hidden');
   deleteBut.addEventListener("click", () => {
-    deleteBut.closest(".place").remove();
+    openPopup(popupDeleteCard)
+    deleteCardButton.addEventListener('click', () => {
+      deleteBut.closest(".place").remove();
+      closePopup(popupDeleteCard);
+    })
   });
 }
 function renderViewBlock(templateEl, name, link) {

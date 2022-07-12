@@ -50,3 +50,55 @@
   font: 400 13px/16px 'Inter';
   text-align: center;
 }
+
+.popup__title_delete-card {
+  margin-bottom: 32px;
+}
+.popup__container_delete-card {
+  height: auto;
+  padding: 34px 36px 36px;
+}
+
+.popup__button_delete-card {
+  margin: 0;
+}
+
+.popup__container_avatar-update {
+  height: auto;
+  padding: 34px 36px 36px;
+}
+.popup__title_avatar-update {
+  margin-bottom: 48px;
+}
+
+.popup__item_avatar-update {
+  margin-bottom: 30px;
+}
+
+.popup__button_avatar-update {
+  margin: 0;
+}
+
+.profile__update-avatar {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.profile__update-avatar_visible {
+  display: block;
+}
+
+.profile__update-image {
+  margin: 47px;
+  width: 26px;
+  height: 26px;
+}
+.place__delete_hidden {
+  display: none;
+}

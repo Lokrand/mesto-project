@@ -16,6 +16,13 @@ export const profileButton = document.querySelector('.profile__button');
 export const placeTitle = document.querySelector('#place-title');
 export const placeContent = document.querySelector('#place-content');
 export const formAddCard = document.querySelector('#profileNewPlace');
+export const popupDeleteCard = document.querySelector('#popup_delete-card');
+export const deleteCardButton = document.querySelector('#button_delete-card');
+export const popupAvatarUpdate = document.querySelector('#popup_avatar-update')
+export const profileUpdateAvatar = document.querySelector('.profile__update-avatar');
+export const buttonUpdateAvatar = document.querySelector('#button_avatar-update');
+export const inputUpdateAvatar = document.querySelector('#avatar-update-input');
+export const formUpdateAvatar = document.querySelector('#avatarUpdateForm');
 export const validatorConfig = {
   inputSelector: ".popup__item",
   submitButtonSelector: ".popup__button",
@@ -23,4 +30,5 @@ export const validatorConfig = {
   inputErrorClass: "popup__item_error",
   fieldsetNewPlace: "#newPlace-fieldset",
   fieldsetProfile: "#create-profile-fieldset",
+  fieldsetUpdateAvatar: "#avatar-update-fieldset"
 }

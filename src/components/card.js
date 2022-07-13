@@ -8,15 +8,22 @@ import {
   deleteCardButton
 } from "./utils/constants";
 import { isMyCard } from "../pages/index";
+import { deleteCard, addLikeToCard, removeLikeFromCard } from "./api";
 
-export function createCard(name, link, counter, cardId) {
+const setLikeButtonState = (data) => {
+  const myCard = data.likes.filter((el) => el._id === window.profile._id)
+  return myCard.length === 1;
+}
+export function createCard(data) {
+  const name = data.name;
+  const link = data.link;
+  const counter = data.likes.length;
   const userElement = mestoTemplate.cloneNode(true);
   getTemplate(name, link, userElement, counter);
-  addLikeButton(userElement);
+  addLikeButton(userElement, data, counter);
   renderViewBlock(userElement, name, link);
-  if (isMyCard()) {
-    addDeleteButton(userElement);
-
+  if (isMyCard(data)) {
+    addDeleteButton(userElement, data);
   }
   return userElement;
 }
@@ -27,18 +34,73 @@ function getTemplate (name, link, userElement, counter) {
   userElement.querySelector(".place__counter").textContent = counter;
   return userElement;
 }
-function addLikeButton(templateEl) {
+
+function addLikeButton(templateEl, data, counter) {
   const likeButton = templateEl.querySelector(".place__button");
-  likeButton.addEventListener("click", () => {
-    likeButton.classList.toggle("place__button_like");
-  });
+  if(setLikeButtonState(data)) {
+    likeButton.classList.add('place__button_like')
+    likeButton.addEventListener('click', () => {
+      likeButton.classList.remove('place__button_like')
+      removeLikeFromCard(data._id)
+      // getTemplate(counter-1)
+    })
+  } else {
+    likeButton.classList.remove('place__button_like')
+    likeButton.addEventListener('click', () => {
+      likeButton.classList.add('place__button_like')
+      addLikeToCard(data._id)
+      console.log(data)
+    })
+  }
+    // likeButton.classList.toggle("place__button_like");
+    // addLikeToCard(data._id)
+
+    // userElement.querySelector(".place__counter").textContent = data.likes.length;
+
+    // removeLikeButton(templateEl, data)
+  // });
 }
-function addDeleteButton(templateEl) {
+  // if (likeButton.classList.contains("place__button_like")) {
+  // }
+  // if (likeButton.classList.contains("place__button_like")) {
+  //   likeButton.addEventListener("click", () => {
+  //     likeButton.classList.remove("place__button_like")
+  //   })
+  // }
+// const putLikeToCard = (templateEl, data) => {
+//   const likeButton = templateEl.querySelector(".place__button");
+//   likeButton.addEventListener("click", () => {
+//     likeButton.classList.add("place__button_like");
+//     // addLikeToCard(data._id)
+// })
+// }
+// const deleteLikeFromCard = (templateEl, data) => {
+//   const likeButton = templateEl.querySelector(".place__button");
+//   likeButton.addEventListener("click", () => {
+//     likeButton.classList.remove("place__button_like");
+//     // removeLikeFromCard(data._id)
+// })
+// }
+// function removeLikeButton(templateEl, data) {
+//   const likeButton = templateEl.querySelector(".place__button");
+
+//     likeButton.addEventListener("click", () => {
+//       likeButton.classList.remove("place__button_like")
+//     })
+
+// }
+
+
+
+
+
+function addDeleteButton(templateEl, data) {
   const deleteBut = templateEl.querySelector(".place__delete");
   deleteBut.classList.remove('place__delete_hidden');
   deleteBut.addEventListener("click", () => {
     openPopup(popupDeleteCard)
     deleteCardButton.addEventListener('click', () => {
+      deleteCard(data._id)
       deleteBut.closest(".place").remove();
       closePopup(popupDeleteCard);
     })

@@ -23,6 +23,8 @@ import {
   buttonUpdateAvatar,
   inputUpdateAvatar,
   formUpdateAvatar,
+  profileEditButton,
+  newPlaceButton,
 } from "../components/utils/constants";
 import {
   getCards,
@@ -33,39 +35,32 @@ import {
   addLikeToCard,
   removeLikeFromCard,
   deleteCard,
-  compareId
 } from "../components/api";
 
-
-
-const isMyCard2 = compareId().then((data) => data)
-
-export const isMyCard = async () => {
-  isMyCard2.then((el) => {
-    if (el[0][22].owner._id === el[1]._id) {
-      return true
-    }
-  })
-  return false;
+export const isMyCard = (card) => {
+  return card.owner._id === window.profile._id;
 };
 // debugger;
-
-
+// getProfileData, getCards через promise.all;
 getProfileData().then((data) => {
   console.log(data);
+  window.profile = data;
   profileTitle.textContent = data.name;
   profileContent.textContent = data.about;
   profileAvatar.src = data.avatar;
-});
-
-getCards().then((data) => {
-  console.log(data);
-  data.reverse().forEach((el) => {
-
-    renderCard(el.name, el.link, el.likes.length, el._id);
+  getCards().then((data) => {
+    console.log(data);
+    data.reverse().forEach((el) => {
+       renderCard(el);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
   });
+})
+.catch((err) => {
+  console.log(err);
 });
-
 
 // заполняем имя профиля и профессию
 function handleProfileFormSubmit(evt) {
@@ -73,20 +68,24 @@ function handleProfileFormSubmit(evt) {
   profileTitle.textContent = nameInput.value;
   profileContent.textContent = jobInput.value;
   sendProfileRequest(nameInput.value, jobInput.value).then((res) => {
+    profileEditButton.textContent = 'Сохранение...'
     if (res.status > 399) {
       throw new Error("Failed to change profile data");
     }
     return res.json();
+  })
+  .then(() => {
+    profileEditButton.textContent = 'Сохранить'
+  })
+  .catch((err) => {
+    console.log(err);
   });
   closePopup(profileEdit);
 }
 
-function renderCard(name, link, counter, cardId) {
-  places.prepend(createCard(name, link, counter, cardId));
+function renderCard(data) {
+  places.prepend(createCard(data));
 }
-
-
-const deleteMyCard = () => {};
 
 // Редактирование аватара пользователя
 profileAvatar.addEventListener("mouseover", () => {
@@ -105,11 +104,18 @@ profileUpdateAvatar.addEventListener("click", () => {
 
 buttonUpdateAvatar.addEventListener("click", () => {
   profileAvatar.src = inputUpdateAvatar.value;
-  sendUpdateAvatar(profileAvatar.src).then((res) => {
+  sendUpdateAvatar(inputUpdateAvatar.value).then((res) => {
+    buttonUpdateAvatar.textContent = "Сохранение...";
     if (res.status > 399) {
       throw new Error("Failed to change profile avatar");
     }
     return res.json();
+  })
+  .then(() => {
+    buttonUpdateAvatar.textContent = "Сохранить";
+  })
+  .catch((err) => {
+    console.log(err);
   });
   closePopup(popupAvatarUpdate);
 });
@@ -134,10 +140,17 @@ formAddCard.addEventListener("submit", (event) => {
   const placeName = placeTitle.value;
   const placeCnt = placeContent.value;
   sendCardsRequest(placeName, placeCnt).then((res) => {
+    newPlaceButton.textContent = "Сохранение...";
     if (res.status > 399) {
       throw new Error("Failed to change cards data");
     }
     return res.json();
+  })
+  .then(() => {
+    newPlaceButton.textContent = "Создать";
+  })
+  .catch((err) => {
+    console.log(err);
   });
   closePopup(popupCreate);
 });

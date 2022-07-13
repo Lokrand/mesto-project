@@ -12,6 +12,8 @@
 .place__image{cursor:pointer;display:block;height:282px;-o-object-fit:cover;object-fit:cover;width:282px}
 .place__title{font:900 24px/29px Inter,sans-serif;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .place__delete{background-color:inherit;border:none;cursor:pointer;height:19px;position:absolute;right:26px;top:19px;transition:opacity .2s linear;width:18px}.place__delete:hover{opacity:.6}
+.place__counter{font:400 13px/16px Inter;margin:3px 0 0;text-align:center}
+.place__delete_hidden{display:none}
 .profile{color:#fff;display:flex;margin:40px 0 51px;position:relative;width:100%}@media screen and (max-width:600px){.profile{flex-direction:column;margin:42px 0 36px}}
 .profile__avatar{border-radius:50%;cursor:pointer;height:120px;margin-right:30px;-o-object-fit:cover;object-fit:cover;width:120px}@media screen and (max-width:899px){.profile__avatar{height:120px;margin-right:20px;width:120px}}@media screen and (max-width:600px){.profile__avatar{margin:0 auto}}
 .profile__block{display:flex}
@@ -21,6 +23,9 @@
 .profile__title{font:500 42px/48px Inter,sans-serif;margin:22px 19px 8px 0;max-width:294px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}@media screen and (max-width:899px){.profile__title{font:500 27px/33px Inter,sans-serif;margin:25px 18px 15px 0}}@media screen and (max-width:600px){.profile__title{margin:26px 10px 7px 66px;max-width:189px}}
 .profile__button-edit{background:transparent;border:none;cursor:pointer;height:24px;margin-top:37px;padding:0;transition:opacity .2s linear}.profile__button-edit:hover{opacity:.6}@media screen and (max-width:899px){.profile__button-edit{height:18px;margin:33px auto 0 0}}@media screen and (max-width:600px){.profile__button-edit{margin-top:34px}}
 .profile__image{border:1px solid #fff;height:10px;padding:6px;width:10px}@media screen and (max-width:899px){.profile__image{height:8px;padding:4px;width:8px}}
+.profile__update-avatar{background:rgba(0,0,0,.8);display:none;height:120px;left:0;position:absolute;top:0;width:120px;z-index:2}
+.profile__update-avatar_visible{display:block}
+.profile__update-image{height:26px;margin:47px;width:26px}
 .footer{margin-top:68px;padding-bottom:60px}@media screen and (max-width:899px){.footer{width:475px}}@media screen and (max-width:600px){.footer{margin:50px auto 0;padding-bottom:36px;width:282px}}
 .footer__text{color:#545454;font:400 18px/22px Inter,sans-serif;margin:0}@media screen and (max-width:600px){.footer__text{font:400 14px/17px Inter,sans-serif}}
 .popup{align-items:center;background-color:rgba(0,0,0,.5);cursor:pointer;display:flex;height:100%;justify-content:center;left:0;opacity:0;overflow:auto;position:fixed;top:0;transition:all .3s linear;visibility:hidden;width:100%;z-index:1}
@@ -39,4 +44,11 @@
 .popup__button_disabled{background-color:#fff;border:1px solid #000;color:#000;opacity:.3}.popup__button_disabled:hover{cursor:auto;opacity:.3}
 .popup__item-error{color:red;display:block;font:400 12px/15px Inter;margin-bottom:13px;margin-top:5px}
 .popup__set{border:none;padding:0}
-.place__counter{font:400 13px/16px Inter;margin:3px 0 0;text-align:center}.popup__title_delete-card{margin-bottom:32px}.popup__container_delete-card{height:auto;padding:34px 36px 36px}.popup__button_delete-card{margin:0}.popup__container_avatar-update{height:auto;padding:34px 36px 36px}.popup__title_avatar-update{margin-bottom:48px}.popup__item_avatar-update{margin-bottom:30px}.popup__button_avatar-update{margin:0}.profile__update-avatar{background:rgba(0,0,0,.8);display:none;height:120px;left:0;position:absolute;top:0;width:120px;z-index:2}.profile__update-avatar_visible{display:block}.profile__update-image{height:26px;margin:47px;width:26px}.place__delete_hidden{display:none}
+.popup__container_avatar-update{height:auto;padding:34px 36px 36px}
+.popup__button_delete-card{margin:0}
+.popup__container_delete-card{height:auto;padding:34px 36px 36px}
+.popup__title_delete-card{margin-bottom:32px}
+.popup__button_avatar-update{margin:0}
+.popup__item_avatar-update{margin-bottom:30px}
+.popup__title_avatar-update{margin-bottom:48px}
+

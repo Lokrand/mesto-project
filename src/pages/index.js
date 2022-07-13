@@ -32,54 +32,39 @@ import {
   sendCardsRequest,
   sendProfileRequest,
   sendUpdateAvatar,
-  addLikeToCard,
-  removeLikeFromCard,
-  deleteCard,
 } from "../components/api";
 
-export const isMyCard = (card) => {
-  return card.owner._id === window.profile._id;
-};
-// debugger;
-// getProfileData, getCards через promise.all;
-getProfileData().then((data) => {
-  console.log(data);
-  window.profile = data;
-  profileTitle.textContent = data.name;
-  profileContent.textContent = data.about;
-  profileAvatar.src = data.avatar;
-  getCards().then((data) => {
-    console.log(data);
-    data.reverse().forEach((el) => {
-       renderCard(el);
-    });
+Promise.all([getProfileData(), getCards()])
+  .then((res) => {
+    const [user, cards] = res;
+    window.profile = user;
+    profileTitle.textContent = user.name;
+    profileContent.textContent = user.about;
+    profileAvatar.src = user.avatar;
+    cards.map((card) => {
+      card.isMyCard = (card.owner._id === user._id)
+      return card;
+    }).reverse().forEach((el) => {
+      renderCard(el);
+    })
   })
   .catch((err) => {
-    console.log(err);
-  });
-})
-.catch((err) => {
-  console.log(err);
-});
+    console.error(err);
+  })
 
 // заполняем имя профиля и профессию
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;
   profileContent.textContent = jobInput.value;
-  sendProfileRequest(nameInput.value, jobInput.value).then((res) => {
-    profileEditButton.textContent = 'Сохранение...'
-    if (res.status > 399) {
-      throw new Error("Failed to change profile data");
-    }
-    return res.json();
-  })
-  .then(() => {
-    profileEditButton.textContent = 'Сохранить'
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  profileEditButton.textContent = "Сохранение...";
+  sendProfileRequest(nameInput.value, jobInput.value)
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      profileEditButton.textContent = "Сохранить";
+    })
   closePopup(profileEdit);
 }
 
@@ -104,19 +89,14 @@ profileUpdateAvatar.addEventListener("click", () => {
 
 buttonUpdateAvatar.addEventListener("click", () => {
   profileAvatar.src = inputUpdateAvatar.value;
-  sendUpdateAvatar(inputUpdateAvatar.value).then((res) => {
-    buttonUpdateAvatar.textContent = "Сохранение...";
-    if (res.status > 399) {
-      throw new Error("Failed to change profile avatar");
-    }
-    return res.json();
-  })
-  .then(() => {
-    buttonUpdateAvatar.textContent = "Сохранить";
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  buttonUpdateAvatar.textContent = "Сохранение...";
+  sendUpdateAvatar(inputUpdateAvatar.value)
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      buttonUpdateAvatar.textContent = "Сохранить";
+    })
   closePopup(popupAvatarUpdate);
 });
 
@@ -134,25 +114,25 @@ const enableValidation = (formData) => {
 };
 
 enableValidation(validatorConfig);
+
 // Add new cards
 formAddCard.addEventListener("submit", (event) => {
   event.preventDefault();
   const placeName = placeTitle.value;
   const placeCnt = placeContent.value;
-  sendCardsRequest(placeName, placeCnt).then((res) => {
-    newPlaceButton.textContent = "Сохранение...";
-    if (res.status > 399) {
-      throw new Error("Failed to change cards data");
-    }
-    return res.json();
-  })
-  .then(() => {
-    newPlaceButton.textContent = "Создать";
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-  closePopup(popupCreate);
+  newPlaceButton.textContent = "Сохранение...";
+  sendCardsRequest(placeName, placeCnt)
+    .then((res) => {
+      res.isMyCard = true;
+      renderCard(res);
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      newPlaceButton.textContent = "Создать";
+      closePopup(popupCreate);
+    });
 });
 formProfileEdit.addEventListener("submit", handleProfileFormSubmit);
 

@@ -3,6 +3,7 @@ const hasInvalidInput = (inputList) => {
     return !inputElement.validity.valid;
   })
 };
+
 const setActualButtonState = (inputList, buttonElement, formData) => {
   if (hasInvalidInput(inputList)) {
     buttonElement.classList.add(formData.inactiveButtonClass);
@@ -12,6 +13,7 @@ const setActualButtonState = (inputList, buttonElement, formData) => {
     buttonElement.removeAttribute('disabled', 'disabled')
   }
 };
+
 const showInputError = (formElement, inputElement, errorMessage, formData) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   errorElement.textContent = errorMessage;

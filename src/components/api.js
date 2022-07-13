@@ -1,7 +1,12 @@
+const dataApi = {
+  url: "https://nomoreparties.co/v1/plus-cohort-12/",
+  token: "a930b285-48bc-4fb0-af5d-2133c0eb4e79"
+}
+
 export const getCards = async () => {
-  const res = await fetch("https://nomoreparties.co/v1/plus-cohort-12/cards", {
+  const res = await fetch(`${dataApi.url}cards`, {
     headers: {
-      authorization: "a930b285-48bc-4fb0-af5d-2133c0eb4e79",
+      authorization: dataApi.token,
     },
   });
   if (res.ok) {
@@ -11,12 +16,13 @@ export const getCards = async () => {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 };
+
 export const getProfileData = async () => {
   const res = await fetch(
-    "https://nomoreparties.co/v1/plus-cohort-12/users/me",
+    `${dataApi.url}users/me`,
     {
       headers: {
-        authorization: "a930b285-48bc-4fb0-af5d-2133c0eb4e79",
+        authorization: dataApi.token,
       },
     }
   );
@@ -29,10 +35,10 @@ export const getProfileData = async () => {
 };
 
 export const sendProfileRequest = (profileName, profileAbout) => {
-  return fetch("https://nomoreparties.co/v1/plus-cohort-12/users/me", {
+  return fetch(`${dataApi.url}users/me`, {
     method: "PATCH",
     headers: {
-      authorization: "a930b285-48bc-4fb0-af5d-2133c0eb4e79",
+      authorization: dataApi.token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -48,16 +54,16 @@ export const sendProfileRequest = (profileName, profileAbout) => {
   })
 };
 
-export const sendCardsRequest = (cardName, cardLink) => {
-  return fetch("https://nomoreparties.co/v1/plus-cohort-12/cards", {
+export const sendCardsRequest = (name, link) => {
+  return fetch(`${dataApi.url}cards`, {
     method: "POST",
     headers: {
-      authorization: "a930b285-48bc-4fb0-af5d-2133c0eb4e79",
+      authorization: dataApi.token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      name: cardName,
-      link: cardLink,
+      name,
+      link
     }),
   })
   .then((res) => {
@@ -69,10 +75,10 @@ export const sendCardsRequest = (cardName, cardLink) => {
 };
 
 export const deleteCard = (cardId) => {
-  return fetch(`https://nomoreparties.co/v1/plus-cohort-12/cards/${cardId}`, {
+  return fetch(`${dataApi.url}cards/${cardId}`, {
     method: "DELETE",
     headers: {
-      authorization: "a930b285-48bc-4fb0-af5d-2133c0eb4e79",
+      authorization: dataApi.token,
       "Content-Type": "application/json",
     },
   })
@@ -86,11 +92,11 @@ export const deleteCard = (cardId) => {
 
 export const addLikeToCard = (cardId) => {
   return fetch(
-    `https://nomoreparties.co/v1/plus-cohort-12/cards/likes/${cardId}`,
+    `${dataApi.url}cards/likes/${cardId}`,
     {
       method: "PUT",
       headers: {
-        authorization: "a930b285-48bc-4fb0-af5d-2133c0eb4e79",
+        authorization: dataApi.token,
         "Content-Type": "application/json",
       },
     }
@@ -105,11 +111,11 @@ export const addLikeToCard = (cardId) => {
 
 export const removeLikeFromCard = (cardId) => {
   return fetch(
-    `https://nomoreparties.co/v1/plus-cohort-12/cards/likes/${cardId}`,
+    `${dataApi.url}cards/likes/${cardId}`,
     {
       method: "DELETE",
       headers: {
-        authorization: "a930b285-48bc-4fb0-af5d-2133c0eb4e79",
+        authorization: dataApi.token,
         "Content-Type": "application/json",
       },
     }
@@ -123,10 +129,10 @@ export const removeLikeFromCard = (cardId) => {
 };
 
 export const sendUpdateAvatar = (avatarLink) => {
-  return fetch("https://nomoreparties.co/v1/plus-cohort-12/users/me/avatar", {
+  return fetch(`${dataApi.url}users/me/avatar`, {
     method: "PATCH",
     headers: {
-      authorization: "a930b285-48bc-4fb0-af5d-2133c0eb4e79",
+      authorization: dataApi.token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({

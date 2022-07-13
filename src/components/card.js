@@ -7,92 +7,62 @@ import {
   popupDeleteCard,
   deleteCardButton
 } from "./utils/constants";
-import { isMyCard } from "../pages/index";
 import { deleteCard, addLikeToCard, removeLikeFromCard } from "./api";
 
 const setLikeButtonState = (data) => {
-  const myCard = data.likes.filter((el) => el._id === window.profile._id)
-  return myCard.length === 1;
+  return data.likes.some((el) => el._id === window.profile._id)
 }
+
+const changeCounter = (userElement, counter) => {
+  userElement.querySelector(".place__counter").textContent = counter;//in func
+  return userElement;
+}
+
 export function createCard(data) {
   const name = data.name;
   const link = data.link;
   const counter = data.likes.length;
   const userElement = mestoTemplate.cloneNode(true);
   getTemplate(name, link, userElement, counter);
+  changeCounter(userElement, counter)
   addLikeButton(userElement, data, counter);
   renderViewBlock(userElement, name, link);
-  if (isMyCard(data)) {
+  if (data.isMyCard) {
     addDeleteButton(userElement, data);
   }
   return userElement;
 }
-function getTemplate (name, link, userElement, counter) {
+
+function getTemplate (name, link, userElement) {
   userElement.querySelector(".place__image").src = link;
   userElement.querySelector(".place__image").alt = name;
   userElement.querySelector(".place__title").textContent = name;
-  userElement.querySelector(".place__counter").textContent = counter;
   return userElement;
 }
 
-function addLikeButton(templateEl, data, counter) {
+function addLikeButton(templateEl, data) {
   const likeButton = templateEl.querySelector(".place__button");
-  if(setLikeButtonState(data)) {
+  if (setLikeButtonState(data)) {
     likeButton.classList.add('place__button_like')
-    likeButton.addEventListener('click', () => {
-      likeButton.classList.remove('place__button_like')
-      removeLikeFromCard(data._id)
-      // getTemplate(counter-1)
-    })
   } else {
     likeButton.classList.remove('place__button_like')
-    likeButton.addEventListener('click', () => {
-      likeButton.classList.add('place__button_like')
-      addLikeToCard(data._id)
-      console.log(data)
-    })
   }
-    // likeButton.classList.toggle("place__button_like");
-    // addLikeToCard(data._id)
-
-    // userElement.querySelector(".place__counter").textContent = data.likes.length;
-
-    // removeLikeButton(templateEl, data)
-  // });
+  likeButton.addEventListener('click', (event) => {
+    const elem = event.target;
+    const card = elem.closest('.place');
+    if (likeButton.classList.contains('place__button_like')) {
+      likeButton.classList.remove('place__button_like')
+      removeLikeFromCard(data._id).then((res) => {
+        changeCounter(card, res.likes.length)
+      })
+    } else {
+      likeButton.classList.add('place__button_like')
+      addLikeToCard(data._id).then((res) => {
+        changeCounter(card, res.likes.length)
+      })
+    }
+  })
 }
-  // if (likeButton.classList.contains("place__button_like")) {
-  // }
-  // if (likeButton.classList.contains("place__button_like")) {
-  //   likeButton.addEventListener("click", () => {
-  //     likeButton.classList.remove("place__button_like")
-  //   })
-  // }
-// const putLikeToCard = (templateEl, data) => {
-//   const likeButton = templateEl.querySelector(".place__button");
-//   likeButton.addEventListener("click", () => {
-//     likeButton.classList.add("place__button_like");
-//     // addLikeToCard(data._id)
-// })
-// }
-// const deleteLikeFromCard = (templateEl, data) => {
-//   const likeButton = templateEl.querySelector(".place__button");
-//   likeButton.addEventListener("click", () => {
-//     likeButton.classList.remove("place__button_like");
-//     // removeLikeFromCard(data._id)
-// })
-// }
-// function removeLikeButton(templateEl, data) {
-//   const likeButton = templateEl.querySelector(".place__button");
-
-//     likeButton.addEventListener("click", () => {
-//       likeButton.classList.remove("place__button_like")
-//     })
-
-// }
-
-
-
-
 
 function addDeleteButton(templateEl, data) {
   const deleteBut = templateEl.querySelector(".place__delete");
@@ -106,6 +76,7 @@ function addDeleteButton(templateEl, data) {
     })
   });
 }
+
 function renderViewBlock(templateEl, name, link) {
   const placeImg = templateEl.querySelector(".place__image");
   placeImg.addEventListener("click", () => {

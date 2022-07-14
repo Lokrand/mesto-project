@@ -55,17 +55,19 @@ Promise.all([getProfileData(), getCards()])
 // заполняем имя профиля и профессию
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  profileTitle.textContent = nameInput.value;
-  profileContent.textContent = jobInput.value;
   profileEditButton.textContent = "Сохранение...";
   sendProfileRequest(nameInput.value, jobInput.value)
+    .then(() => {
+      profileTitle.textContent = nameInput.value;
+      profileContent.textContent = jobInput.value;
+      closePopup(profileEdit);
+    })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
       profileEditButton.textContent = "Сохранить";
     })
-  closePopup(profileEdit);
 }
 
 function renderCard(data) {
@@ -84,20 +86,21 @@ profileAvatar.addEventListener("mouseout", () => {
 profileUpdateAvatar.addEventListener("click", () => {
   openPopup(popupAvatarUpdate);
   formUpdateAvatar.reset();
-  enableValidation(validatorConfig);
 });
 
 buttonUpdateAvatar.addEventListener("click", () => {
   profileAvatar.src = inputUpdateAvatar.value;
   buttonUpdateAvatar.textContent = "Сохранение...";
   sendUpdateAvatar(inputUpdateAvatar.value)
+    .then(() => {
+      closePopup(popupAvatarUpdate);
+    })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
       buttonUpdateAvatar.textContent = "Сохранить";
     })
-  closePopup(popupAvatarUpdate);
 });
 
 const enableValidation = (formData) => {
@@ -125,13 +128,13 @@ formAddCard.addEventListener("submit", (event) => {
     .then((res) => {
       res.isMyCard = true;
       renderCard(res);
+      closePopup(popupCreate);
     })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
       newPlaceButton.textContent = "Создать";
-      closePopup(popupCreate);
     });
 });
 formProfileEdit.addEventListener("submit", handleProfileFormSubmit);
@@ -141,11 +144,9 @@ openEdit.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileContent.textContent;
   openPopup(profileEdit);
-  enableValidation(validatorConfig);
 });
 
 profileButton.addEventListener("click", () => {
   openPopup(popupCreate);
   formAddCard.reset();
-  enableValidation(validatorConfig);
 });

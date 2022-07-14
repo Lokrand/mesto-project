@@ -3,146 +3,79 @@ const dataApi = {
   token: "a930b285-48bc-4fb0-af5d-2133c0eb4e79"
 }
 
-export const getCards = async () => {
-  const res = await fetch(`${dataApi.url}cards`, {
-    headers: {
-      authorization: dataApi.token,
-    },
-  });
+const checkResponse = async (res) => {
   if (res.ok) {
     const data = await res.json();
     return data;
   } else {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
+}
+
+const commonFetch = async (path, params = {}) => {
+  const res = await fetch(`${dataApi.url}${path}`,
+  {
+    headers: {
+      authorization: dataApi.token,
+      "Content-Type": "application/json",
+    },
+    ...params
+  }
+  )
+  return await checkResponse(res);
+}
+
+export const getCards = async () => {
+  return await commonFetch('cards');
 };
 
 export const getProfileData = async () => {
-  const res = await fetch(
-    `${dataApi.url}users/me`,
-    {
-      headers: {
-        authorization: dataApi.token,
-      },
-    }
-  );
-  if (res.ok) {
-    const data = await res.json();
-    return data;
-  } else {
-    return Promise.reject(`Ошибка: ${res.status}`);
-  }
+  return await commonFetch('users/me');
 };
 
-export const sendProfileRequest = (profileName, profileAbout) => {
-  return fetch(`${dataApi.url}users/me`, {
+export const sendProfileRequest = async (name, about) => {
+  return await commonFetch('users/me', {
     method: "PATCH",
-    headers: {
-      authorization: dataApi.token,
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({
-      name: profileName,
-      about: profileAbout,
+      name,
+      about
     }),
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
+  });
 };
 
-export const sendCardsRequest = (name, link) => {
-  return fetch(`${dataApi.url}cards`, {
+export const sendCardsRequest = async (name, link) => {
+  return await commonFetch('cards', {
     method: "POST",
-    headers: {
-      authorization: dataApi.token,
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({
       name,
       link
     }),
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
+  });
 };
 
-export const deleteCard = (cardId) => {
-  return fetch(`${dataApi.url}cards/${cardId}`, {
+export const deleteCard = async (cardId) => {
+  return await commonFetch(`cards/${cardId}`, {
     method: "DELETE",
-    headers: {
-      authorization: dataApi.token,
-      "Content-Type": "application/json",
-    },
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
+  });
 };
 
-export const addLikeToCard = (cardId) => {
-  return fetch(
-    `${dataApi.url}cards/likes/${cardId}`,
-    {
-      method: "PUT",
-      headers: {
-        authorization: dataApi.token,
-        "Content-Type": "application/json",
-      },
-    }
-  )
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
+export const addLikeToCard = async (cardId) => {
+  return await commonFetch(`cards/likes/${cardId}`, {
+    method: "PUT",
+  });
 };
 
-export const removeLikeFromCard = (cardId) => {
-  return fetch(
-    `${dataApi.url}cards/likes/${cardId}`,
-    {
-      method: "DELETE",
-      headers: {
-        authorization: dataApi.token,
-        "Content-Type": "application/json",
-      },
-    }
-  )
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
+export const removeLikeFromCard = async (cardId) => {
+  return await commonFetch(`cards/likes/${cardId}`, {
+    method: "DELETE",
+  });
 };
 
-export const sendUpdateAvatar = (avatarLink) => {
-  return fetch(`${dataApi.url}users/me/avatar`, {
+export const sendUpdateAvatar = async (avatarLink) => {
+  return await commonFetch('users/me/avatar', {
     method: "PATCH",
-    headers: {
-      authorization: dataApi.token,
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({
-      avatar: avatarLink,
+      avatar: avatarLink
     }),
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
+  });
 };

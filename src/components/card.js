@@ -23,7 +23,7 @@ export function createCard(data) {
   const link = data.link;
   const counter = data.likes.length;
   const userElement = mestoTemplate.cloneNode(true);
-  getTemplate(name, link, userElement, counter);
+  getTemplate(name, link, userElement, data._id);
   changeCounter(userElement, counter)
   addLikeButton(userElement, data, counter);
   renderViewBlock(userElement, name, link);
@@ -33,10 +33,11 @@ export function createCard(data) {
   return userElement;
 }
 
-function getTemplate (name, link, userElement) {
+function getTemplate (name, link, userElement, id) {
   userElement.querySelector(".place__image").src = link;
   userElement.querySelector(".place__image").alt = name;
   userElement.querySelector(".place__title").textContent = name;
+  userElement.querySelector(".place").id = `card${id}`;
   return userElement;
 }
 
@@ -51,14 +52,22 @@ function addLikeButton(templateEl, data) {
     const elem = event.target;
     const card = elem.closest('.place');
     if (likeButton.classList.contains('place__button_like')) {
-      likeButton.classList.remove('place__button_like')
-      removeLikeFromCard(data._id).then((res) => {
+      removeLikeFromCard(data._id)
+      .then((res) => {
+        likeButton.classList.remove('place__button_like')
         changeCounter(card, res.likes.length)
       })
+      .catch((err) => {
+        console.error(err);
+      })
     } else {
-      likeButton.classList.add('place__button_like')
-      addLikeToCard(data._id).then((res) => {
+      addLikeToCard(data._id)
+      .then((res) => {
+        likeButton.classList.add('place__button_like')
         changeCounter(card, res.likes.length)
+      })
+      .catch((err) => {
+        console.error(err);
       })
     }
   })
@@ -68,14 +77,22 @@ function addDeleteButton(templateEl, data) {
   const deleteBut = templateEl.querySelector(".place__delete");
   deleteBut.classList.remove('place__delete_hidden');
   deleteBut.addEventListener("click", () => {
+    deleteCardButton.setAttribute('data-card-id', data._id)
     openPopup(popupDeleteCard)
-    deleteCardButton.addEventListener('click', () => {
-      deleteCard(data._id)
-      deleteBut.closest(".place").remove();
-      closePopup(popupDeleteCard);
-    })
   });
 }
+
+deleteCardButton.addEventListener('click', () => {
+  const cardId = deleteCardButton.getAttribute('data-card-id')
+  deleteCard(cardId)
+  .then(() => {
+    document.querySelector(`#card${cardId}`).remove();
+    closePopup(popupDeleteCard);
+  })
+  .catch((err) => {
+    console.error(err);
+  })
+})
 
 function renderViewBlock(templateEl, name, link) {
   const placeImg = templateEl.querySelector(".place__image");

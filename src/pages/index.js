@@ -84,15 +84,18 @@ profileAvatar.addEventListener("mouseout", () => {
 });
 
 profileUpdateAvatar.addEventListener("click", () => {
-  openPopup(popupAvatarUpdate);
   formUpdateAvatar.reset();
+  buttonUpdateAvatar.setAttribute('disabled', 'disabled');
+  buttonUpdateAvatar.classList.add(validatorConfig.inactiveButtonClass);
+  openPopup(popupAvatarUpdate);
 });
 
-buttonUpdateAvatar.addEventListener("click", () => {
-  profileAvatar.src = inputUpdateAvatar.value;
+formUpdateAvatar.addEventListener("submit", (event) => {
+  event.preventDefault();
   buttonUpdateAvatar.textContent = "Сохранение...";
   sendUpdateAvatar(inputUpdateAvatar.value)
     .then(() => {
+      profileAvatar.src = inputUpdateAvatar.value;
       closePopup(popupAvatarUpdate);
     })
     .catch((err) => {
@@ -147,6 +150,8 @@ openEdit.addEventListener("click", () => {
 });
 
 profileButton.addEventListener("click", () => {
-  openPopup(popupCreate);
   formAddCard.reset();
+  newPlaceButton.setAttribute('disabled', 'disabled');
+  newPlaceButton.classList.add(validatorConfig.inactiveButtonClass);
+  openPopup(popupCreate);
 });

@@ -8,6 +8,10 @@ import {
   deleteCardButton
 } from "./utils/constants";
 import { deleteCard, addLikeToCard, removeLikeFromCard } from "./api";
+import {popupWithImage} from "../pages/index" /*для тестирования. Пока не очень понятно,
+"как реализовать вот это:
+Когда дойдёте до реализации классов Popup, свяжите класс Card c попапом.
+Сделайте так, чтобы Card принимал в конструктор функцию handleCardClick".*/
 
 const setLikeButtonState = (data) => {
   return data.likes.some((el) => el._id === window.profile._id)
@@ -97,9 +101,11 @@ deleteCardButton.addEventListener('click', () => {
 function renderViewBlock(templateEl, name, link) {
   const placeImg = templateEl.querySelector(".place__image");
   placeImg.addEventListener("click", () => {
-    popupImg.src = link;
-    popupImg.alt = name;
-    popupText.textContent = name;
-    openPopup(popupView);
+    //popupImg.src = link;
+    //popupImg.alt = name;
+    //popupText.textContent = name;
+    //openPopup(popupView);
+    popupWithImage.open(name, link);
+    popupWithImage.setEventListeners();
   });
 }

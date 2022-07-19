@@ -33,6 +33,12 @@ import {
   sendProfileRequest,
   sendUpdateAvatar,
 } from "../components/api";
+import Popup from "../components/Popup";
+import PopupWithImage from "../components/PopupWithImage";
+
+const popupAvatarUpdateTest = new Popup('#popup_avatar-update');
+export const popupWithImage = new PopupWithImage('#popup_view');
+
 
 Promise.all([getProfileData(), getCards()])
   .then((res) => {
@@ -87,7 +93,9 @@ profileUpdateAvatar.addEventListener("click", () => {
   formUpdateAvatar.reset();
   buttonUpdateAvatar.setAttribute('disabled', 'disabled');
   buttonUpdateAvatar.classList.add(validatorConfig.inactiveButtonClass);
-  openPopup(popupAvatarUpdate);
+  popupAvatarUpdateTest.open();
+  popupAvatarUpdateTest.setEventListeners();
+  //openPopup(popupAvatarUpdate);
 });
 
 formUpdateAvatar.addEventListener("submit", (event) => {
@@ -96,7 +104,8 @@ formUpdateAvatar.addEventListener("submit", (event) => {
   sendUpdateAvatar(inputUpdateAvatar.value)
     .then(() => {
       profileAvatar.src = inputUpdateAvatar.value;
-      closePopup(popupAvatarUpdate);
+      popupAvatarUpdateTest.close()
+      //closePopup(popupAvatarUpdate);
     })
     .catch((err) => {
       console.error(err);

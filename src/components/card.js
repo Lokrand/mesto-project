@@ -12,6 +12,22 @@ import {popupWithImage} from "../pages/index" /*для тестирования.
 "как реализовать вот это:
 Когда дойдёте до реализации классов Popup, свяжите класс Card c попапом.
 Сделайте так, чтобы Card принимал в конструктор функцию handleCardClick".*/
+
+export class Card {
+  constructor({name, link}, selector) {
+    this.name = name;
+    this.link = link;
+    this.selector = document.querySelector(selector);
+  }
+
+
+}
+
+
+
+
+
+
 const ApiData = new Api();
 const setLikeButtonState = (data) => {
   return data.likes.some((el) => el._id === window.profile._id)

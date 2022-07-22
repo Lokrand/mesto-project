@@ -7,12 +7,12 @@ import {
   popupDeleteCard,
   deleteCardButton
 } from "./utils/constants";
-import { deleteCard, addLikeToCard, removeLikeFromCard } from "./api";
+import { Api } from "./api";
 import {popupWithImage} from "../pages/index" /*для тестирования. Пока не очень понятно,
 "как реализовать вот это:
 Когда дойдёте до реализации классов Popup, свяжите класс Card c попапом.
 Сделайте так, чтобы Card принимал в конструктор функцию handleCardClick".*/
-
+const ApiData = new Api();
 const setLikeButtonState = (data) => {
   return data.likes.some((el) => el._id === window.profile._id)
 }
@@ -56,7 +56,7 @@ function addLikeButton(templateEl, data) {
     const elem = event.target;
     const card = elem.closest('.place');
     if (likeButton.classList.contains('place__button_like')) {
-      removeLikeFromCard(data._id)
+      ApiData.removeLikeFromCard(data._id)
       .then((res) => {
         likeButton.classList.remove('place__button_like')
         changeCounter(card, res.likes.length)
@@ -65,7 +65,7 @@ function addLikeButton(templateEl, data) {
         console.error(err);
       })
     } else {
-      addLikeToCard(data._id)
+      ApiData.addLikeToCard(data._id)
       .then((res) => {
         likeButton.classList.add('place__button_like')
         changeCounter(card, res.likes.length)
@@ -88,7 +88,7 @@ function addDeleteButton(templateEl, data) {
 
 deleteCardButton.addEventListener('click', () => {
   const cardId = deleteCardButton.getAttribute('data-card-id')
-  deleteCard(cardId)
+  ApiData.deleteCard(cardId)
   .then(() => {
     document.querySelector(`#card${cardId}`).remove();
     closePopup(popupDeleteCard);

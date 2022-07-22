@@ -26,21 +26,15 @@ import {
   profileEditButton,
   newPlaceButton,
 } from "../components/utils/constants";
-import {
-  getCards,
-  getProfileData,
-  sendCardsRequest,
-  sendProfileRequest,
-  sendUpdateAvatar,
-} from "../components/api";
+import { Api } from "../components/api";
 import Popup from "../components/Popup";
 import PopupWithImage from "../components/PopupWithImage";
 
 const popupAvatarUpdateTest = new Popup('#popup_avatar-update');
 export const popupWithImage = new PopupWithImage('#popup_view');
+const ApiData = new Api();
 
-
-Promise.all([getProfileData(), getCards()])
+Promise.all([ApiData.getProfileData(), ApiData.getCards()])
   .then((res) => {
     const [user, cards] = res;
     window.profile = user;
@@ -62,7 +56,7 @@ Promise.all([getProfileData(), getCards()])
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileEditButton.textContent = "Сохранение...";
-  sendProfileRequest(nameInput.value, jobInput.value)
+  ApiData.sendProfileRequest(nameInput.value, jobInput.value)
     .then(() => {
       profileTitle.textContent = nameInput.value;
       profileContent.textContent = jobInput.value;
@@ -101,7 +95,7 @@ profileUpdateAvatar.addEventListener("click", () => {
 formUpdateAvatar.addEventListener("submit", (event) => {
   event.preventDefault();
   buttonUpdateAvatar.textContent = "Сохранение...";
-  sendUpdateAvatar(inputUpdateAvatar.value)
+  ApiData.sendUpdateAvatar(inputUpdateAvatar.value)
     .then(() => {
       profileAvatar.src = inputUpdateAvatar.value;
       popupAvatarUpdateTest.close()
@@ -136,7 +130,7 @@ formAddCard.addEventListener("submit", (event) => {
   const placeName = placeTitle.value;
   const placeCnt = placeContent.value;
   newPlaceButton.textContent = "Сохранение...";
-  sendCardsRequest(placeName, placeCnt)
+  ApiData.sendCardsRequest(placeName, placeCnt)
     .then((res) => {
       res.isMyCard = true;
       renderCard(res);

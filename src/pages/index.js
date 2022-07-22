@@ -1,7 +1,7 @@
 import "./index.css";
 import { openPopup, closePopup } from "../components/modal";
 import { createCard } from "../components/card";
-import { setEventListeners } from "../components/validate";
+import { setEventListeners, FormValidator } from "../components/validate";
 import {
   openEdit,
   profileButton,
@@ -109,20 +109,67 @@ formUpdateAvatar.addEventListener("submit", (event) => {
     })
 });
 
-const enableValidation = (formData) => {
-  const fieldsetList = document.querySelector(formData.fieldsetNewPlace);
-  const fieldsetCreateProfile = document.querySelector(
-    formData.fieldsetProfile
-  );
-  const fieldsetAvatarUpdate = document.querySelector(
-    formData.fieldsetUpdateAvatar
-  );
-  setEventListeners(fieldsetAvatarUpdate, formData);
-  setEventListeners(fieldsetList, formData);
-  setEventListeners(fieldsetCreateProfile, formData);
-};
 
-enableValidation(validatorConfig);
+
+
+
+
+
+
+
+
+const fieldsetList = document.querySelector(validatorConfig.fieldsetNewPlace);
+const fieldsetCreateProfile = document.querySelector(validatorConfig.fieldsetProfile);
+const fieldsetAvatarUpdate = document.querySelector(validatorConfig.fieldsetUpdateAvatar);
+
+
+
+
+
+
+const ValidateProfleTitleForm = new FormValidator(validatorConfig, fieldsetCreateProfile);
+ValidateProfleTitleForm.enableValidation();
+const ValidateProfileAvatarForm = new FormValidator(validatorConfig, fieldsetAvatarUpdate);
+ValidateProfileAvatarForm.enableValidation();
+const ValidateCardForm = new FormValidator(validatorConfig, fieldsetList);
+ValidateCardForm.enableValidation();
+
+
+// const enableValidation = (formData) => {
+//   const fieldsetList = document.querySelector(formData.fieldsetNewPlace);
+//   const fieldsetCreateProfile = document.querySelector(
+//     formData.fieldsetProfile
+//   );
+//   const fieldsetAvatarUpdate = document.querySelector(
+//     formData.fieldsetUpdateAvatar
+//   );
+//   setEventListeners(fieldsetAvatarUpdate, formData);
+//   setEventListeners(fieldsetList, formData);
+//   setEventListeners(fieldsetCreateProfile, formData);
+// };
+
+// enableValidation(validatorConfig);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Add new cards
 formAddCard.addEventListener("submit", (event) => {

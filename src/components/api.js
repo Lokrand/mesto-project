@@ -12,7 +12,6 @@ class CommonApi {
     }
   }
 
-
   async commonFetch (path, params = {}) {
     const res = await fetch(`${this.url}${path}`,
   {

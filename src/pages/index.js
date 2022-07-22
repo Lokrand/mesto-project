@@ -1,6 +1,6 @@
 import "./index.css";
 import { openPopup, closePopup } from "../components/modal";
-import { createCard } from "../components/card";
+import { Card } from "../components/card";
 import { FormValidator } from "../components/validate";
 import {
   openEdit,
@@ -9,7 +9,6 @@ import {
   placeContent,
   formAddCard,
   validatorConfig,
-  places,
   nameInput,
   jobInput,
   formProfileEdit,
@@ -19,7 +18,6 @@ import {
   profileContent,
   profileAvatar,
   profileUpdateAvatar,
-  popupAvatarUpdate,
   buttonUpdateAvatar,
   inputUpdateAvatar,
   formUpdateAvatar,
@@ -45,7 +43,8 @@ Promise.all([ApiData.getProfileData(), ApiData.getCards()])
       card.isMyCard = (card.owner._id === user._id)
       return card;
     }).reverse().forEach((el) => {
-      renderCard(el);
+      const CardClass = new Card(el, '#mesto');
+      CardClass.renderCard();
     })
   })
   .catch((err) => {
@@ -68,10 +67,6 @@ function handleProfileFormSubmit(evt) {
     .finally(() => {
       profileEditButton.textContent = "Сохранить";
     })
-}
-
-function renderCard(data) {
-  places.prepend(createCard(data));
 }
 
 // Редактирование аватара пользователя
@@ -131,7 +126,8 @@ formAddCard.addEventListener("submit", (event) => {
   ApiData.sendCardsRequest(placeName, placeCnt)
     .then((res) => {
       res.isMyCard = true;
-      renderCard(res);
+      const CardClass = new Card(res, '#mesto')
+      CardClass.renderCard();
       closePopup(popupCreate);
     })
     .catch((err) => {

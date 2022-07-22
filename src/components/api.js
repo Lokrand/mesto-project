@@ -12,6 +12,10 @@ const checkResponse = async (res) => {
   }
 }
 
+
+
+
+
 const commonFetch = async (path, params = {}) => {
   const res = await fetch(`${dataApi.url}${path}`,
   {

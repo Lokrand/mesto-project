@@ -1,18 +1,19 @@
-import { closePopup, openPopup } from "./modal";
 import {
   popupDeleteCard,
   deleteCardButton,
 } from "./utils/constants";
 import { Api } from "./api";
-import {popupWithImage} from "../pages/index" /*для тестирования. Пока не очень понятно,
+import {popupWithImage, popupDelete} from "../pages/index" /*для тестирования. Пока не очень понятно,
 "как реализовать вот это:
 Когда дойдёте до реализации классов Popup, свяжите класс Card c попапом.
 Сделайте так, чтобы Card принимал в конструктор функцию handleCardClick".*/
 
 export class Card {
-  constructor(data, selector) {
+  constructor(data, selector, handleCardClick) {
     this.data = data;
     this.template = document.querySelector(selector);
+    this.handleCardClick = handleCardClick;
+    console.log(handleCardClick)
   }
 
   render() {
@@ -85,14 +86,15 @@ export class Card {
     deleteBut.classList.remove('place__delete_hidden');
     deleteBut.addEventListener("click", () => {
       deleteCardButton.setAttribute('data-card-id', this.data._id)
-      openPopup(popupDeleteCard)
+      popupDelete.open();
+      popupDelete.setEventListeners()
     });
   }
 
   _renderViewBlock(templateEl, name, link) {
     const placeImg = templateEl.querySelector(".place__image");
     placeImg.addEventListener("click", () => {
-      popupWithImage.open(name, link);
+      this.handleCardClick(name, link)
       popupWithImage.setEventListeners();
     });
   }
@@ -105,7 +107,7 @@ deleteCardButton.addEventListener('click', () => {
   ApiData.deleteCard(cardId)
   .then(() => {
     document.querySelector(`#card${cardId}`).remove();
-    closePopup(popupDeleteCard);
+    popupDelete.close();
   })
   .catch((err) => {
     console.error(err);

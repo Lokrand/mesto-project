@@ -1,5 +1,4 @@
 import "./index.css";
-import { openPopup, closePopup } from "../components/modal";
 import { Card } from "../components/card";
 import { FormValidator } from "../components/validate";
 import { Section } from "../components/Section";
@@ -37,6 +36,8 @@ import UserInfo from "../components/UserInfo";
 
 
 export const popupWithImage = new PopupWithImage('#popup_view');
+export const popupDelete = new Popup('#popup_delete-card');
+
 const api = new Api();
 
 Promise.all([api.getProfileData(), api.getCards()])
@@ -51,7 +52,7 @@ Promise.all([api.getProfileData(), api.getCards()])
       return card;
     })
     const section = new Section({items: cardsArr, renderer: (item) => {
-      const card = new Card(item, '#mesto');
+      const card = new Card(item, '#mesto', popupWithImage.open.bind(popupWithImage));
       section.addItem(card.render())
     }}, ".places");
     section.renderItems();

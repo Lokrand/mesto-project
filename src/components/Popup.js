@@ -41,7 +41,8 @@ export default class Popup {
       this._selector.classList.remove("popup_opened");
     })
 
-  }
+}
+
 
 }
 

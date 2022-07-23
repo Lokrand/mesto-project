@@ -157,7 +157,7 @@ const popupNewCard = new PopupWithForm({
   });
   }
 })
-
+popupNewCard.setEventListeners();
 
 /*formAddCard.addEventListener("submit", (event) => {
   event.preventDefault();

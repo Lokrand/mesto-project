@@ -197,5 +197,5 @@ profileButton.addEventListener("click", () => {
   newPlaceButton.setAttribute('disabled', 'disabled');
   newPlaceButton.classList.add(validatorConfig.inactiveButtonClass);
   popupNewCard.open();
-  popupNewCard.setEventListeners()
+
 });

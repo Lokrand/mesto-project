@@ -159,7 +159,7 @@ const popupNewCard = new PopupWithForm({
 })
 
 
-/*formAddCard.addEventListener("submit", (event) => {
+formAddCard.addEventListener("submit", (event) => {
   event.preventDefault();
   const placeName = placeTitle.value;
   const placeCnt = placeContent.value;
@@ -167,11 +167,12 @@ const popupNewCard = new PopupWithForm({
   api.sendCardsRequest(placeName, placeCnt)
     .then((res) => {
       res.isMyCard = true;
+      console.log(res)
       const section = new Section({items: res, renderer: (item) => {
         const card = new Card(item, '#mesto');
         section.addItem(card.render())
       }}, ".places");
-      section.renderItems();
+      section.renderItem();
       closePopup(popupCreate);
     })
     .catch((err) => {
@@ -180,7 +181,7 @@ const popupNewCard = new PopupWithForm({
     .finally(() => {
       newPlaceButton.textContent = "Создать";
     });
-});*/
+});
 
 formProfileEdit.addEventListener("submit", handleProfileFormSubmit);
 

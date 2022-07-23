@@ -69,12 +69,12 @@ const popupUserInfo = new UserInfo(
   userData,
   api.getProfileData()
 )
-function handleProfileFormSubmit(evt) {
+async function handleProfileFormSubmit(evt) {
   evt.preventDefault();
+  const profileData = await api.getProfileData();
+  console.log(profileData)
   profileEditButton.textContent = "Сохранение...";
-  popupUserInfo.setUserInfo(
-    api.sendProfileRequest(userData.name.value, userData.about.value)
-    )
+  popupUserInfo.setUserInfo(profileData)
 }
 
 /*function handleProfileFormSubmit(evt) {
@@ -146,7 +146,7 @@ const popupNewCard = new PopupWithForm({
       const card = new Card(item, '#mesto');
       section.addItem(card.render())
     }}, ".places");
-    section.renderItems();
+    // section.renderItems();
     popupNewCard.close('#profileNewPlace');
   })
   .catch((err) => {
@@ -159,36 +159,42 @@ const popupNewCard = new PopupWithForm({
 })
 popupNewCard.setEventListeners();
 
-formAddCard.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const placeName = placeTitle.value;
-  const placeCnt = placeContent.value;
-  newPlaceButton.textContent = "Сохранение...";
-  api.sendCardsRequest(placeName, placeCnt)
-    .then((res) => {
-      res.isMyCard = true;
-      console.log(res)
-      const section = new Section({items: res, renderer: (item) => {
-        const card = new Card(item, '#mesto');
-        section.addItem(card.render())
-      }}, ".places");
-      section.renderItem();
-      closePopup(popupCreate);
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-    .finally(() => {
-      newPlaceButton.textContent = "Создать";
-    });
-});
+// formAddCard.addEventListener("submit", (event) => {
+//   event.preventDefault();
+//   const placeName = placeTitle.value;
+//   const placeCnt = placeContent.value;
+//   newPlaceButton.textContent = "Сохранение...";
+//   api.sendCardsRequest(placeName, placeCnt)
+//     .then((res) => {
+//       res.isMyCard = true;
+//       console.log(res)
+//       const section = new Section({items: res, renderer: (item) => {
+//         const card = new Card(item, '#mesto');
+//         section.addItem(card.render())
+//       }}, ".places");
+//       section.renderItem();
+//       closePopup(popupCreate);
+//     })
+//     .catch((err) => {
+//       console.error(err);
+//     })
+//     .finally(() => {
+//       newPlaceButton.textContent = "Создать";
+//     });
+// });
 
 formProfileEdit.addEventListener("submit", handleProfileFormSubmit);
 
 // открываем и закрываем модальные окна редактирования профиля и добавления карточек.
+// openEdit.addEventListener("click", () => {
+//   nameInput.value = profileTitle.textContent;
+//   jobInput.value = profileContent.textContent;
+//   popupUserInfo.open();
+//   popupUserInfo.setEventListeners();
+// });
+
 openEdit.addEventListener("click", () => {
-  nameInput.value = profileTitle.textContent;
-  jobInput.value = profileContent.textContent;
+  popupUserInfo.getUserInfo()
   popupUserInfo.open();
   popupUserInfo.setEventListeners();
 });

@@ -2,6 +2,7 @@ import "./index.css";
 import { openPopup, closePopup } from "../components/modal";
 import { Card } from "../components/card";
 import { FormValidator } from "../components/validate";
+import { Section } from "../components/Section";
 import {
   openEdit,
   profileButton,
@@ -43,13 +44,15 @@ Promise.all([api.getProfileData(), api.getCards()])
     profileTitle.textContent = user.name;
     profileContent.textContent = user.about;
     profileAvatar.src = user.avatar;
-    cards.map((card) => {
+    const cardsArr = cards.map((card) => {
       card.isMyCard = (card.owner._id === user._id)
       return card;
-    }).forEach((el) => {
-      const card = new Card(el, '#mesto');
-      places.append(card.render());
     })
+    const section = new Section({items: cardsArr, renderer: (item) => {
+      const card = new Card(item, '#mesto');
+      section.addItem(card.render())
+    }}, ".places");
+    section.renderItems();
   })
   .catch((err) => {
     console.error(err);
@@ -118,8 +121,11 @@ formAddCard.addEventListener("submit", (event) => {
   api.sendCardsRequest(placeName, placeCnt)
     .then((res) => {
       res.isMyCard = true;
-      const card = new Card(res, '#mesto')
-      places.prepend(card.render());
+      const section = new Section({items: res, renderer: (item) => {
+        const card = new Card(item, '#mesto');
+        section.addItem(card.render())
+      }}, ".places");
+      section.renderItems();
       closePopup(popupCreate);
     })
     .catch((err) => {

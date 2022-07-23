@@ -31,14 +31,14 @@ export default class Popup {
     if (
       evt.target.classList.contains("popup")
     ) {
-      this.close();
+      this._selector.classList.remove("popup_opened");
     }
   }
 
   setEventListeners() {
     const buttonClose = this._selector.querySelector('.popup__close');
     buttonClose.addEventListener("click", () => {
-      this.close();
+      this._selector.classList.remove("popup_opened");
     })
 
   }

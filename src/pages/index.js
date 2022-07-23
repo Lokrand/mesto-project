@@ -32,8 +32,10 @@ import {
 import { Api } from "../components/api";
 import Popup from "../components/Popup";
 import PopupWithImage from "../components/PopupWithImage";
+import PopupWithForm from "../components/PopupWithForm";
+import UserInfo from "../components/UserInfo";
 
-const popupAvatarUpdateTest = new Popup('#popup_avatar-update');
+
 export const popupWithImage = new PopupWithImage('#popup_view');
 const api = new Api();
 
@@ -59,7 +61,23 @@ Promise.all([api.getProfileData(), api.getCards()])
   })
 
 // заполняем имя профиля и профессию
+const userData = {name: document.querySelector('#login-name'),
+about: document.querySelector('#login-content')};
+
+const popupUserInfo = new UserInfo(
+  '#popup__profile',
+  userData,
+  api.getProfileData()
+)
 function handleProfileFormSubmit(evt) {
+  evt.preventDefault();
+  profileEditButton.textContent = "Сохранение...";
+  popupUserInfo.setUserInfo(
+    api.sendProfileRequest(userData.name.value, userData.about.value)
+    )
+}
+
+/*function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileEditButton.textContent = "Сохранение...";
   api.sendProfileRequest(nameInput.value, jobInput.value)
@@ -74,25 +92,23 @@ function handleProfileFormSubmit(evt) {
     .finally(() => {
       profileEditButton.textContent = "Сохранить";
     })
-}
+}*/
 
 profileUpdateAvatar.addEventListener("click", () => {
   formUpdateAvatar.reset();
   buttonUpdateAvatar.setAttribute('disabled', 'disabled');
   buttonUpdateAvatar.classList.add(validatorConfig.inactiveButtonClass);
-  popupAvatarUpdateTest.open();
-  popupAvatarUpdateTest.setEventListeners();
-  //openPopup(popupAvatarUpdate);
+  popupUpdateAvatar.open();
 });
 
-formUpdateAvatar.addEventListener("submit", (event) => {
-  event.preventDefault();
-  buttonUpdateAvatar.textContent = "Сохранение...";
-  api.sendUpdateAvatar(inputUpdateAvatar.value)
+const popupUpdateAvatar = new PopupWithForm({
+  selector: '#popup_avatar-update',
+  handleFormSubmit: (formData) => {
+    buttonUpdateAvatar.textContent = "Сохранение...";
+    api.sendUpdateAvatar(formData["avatar-update-input"])
     .then(() => {
-      profileAvatar.src = inputUpdateAvatar.value;
-      popupAvatarUpdateTest.close()
-      //closePopup(popupAvatarUpdate);
+      profileAvatar.src = formData["avatar-update-input"];
+      popupUpdateAvatar.close('#avatarUpdateForm')
     })
     .catch((err) => {
       console.error(err);
@@ -100,8 +116,10 @@ formUpdateAvatar.addEventListener("submit", (event) => {
     .finally(() => {
       buttonUpdateAvatar.textContent = "Сохранить";
     })
+  }
 });
 
+popupUpdateAvatar.setEventListeners()
 // Validation forms
 
 const validateProfleTitleForm = new FormValidator(validatorConfig, fieldsetCreateProfile);
@@ -113,7 +131,35 @@ validateCardForm.enableValidation();
 
 
 // Add new cards
-formAddCard.addEventListener("submit", (event) => {
+const popupNewCard = new PopupWithForm({
+  selector: '#popup__create',
+  handleFormSubmit: (formData) => {
+  const placeName = formData["place-name"];
+  const placeCnt = formData["place-content"];
+  newPlaceButton.textContent = "Сохранение...";
+  console.log(placeName)
+  console.log(placeCnt)
+  api.sendCardsRequest(placeName, placeCnt)
+  .then((res) => {
+    console.log(res)
+    const section = new Section({items: res, renderer: (item) => {
+      const card = new Card(item, '#mesto');
+      section.addItem(card.render())
+    }}, ".places");
+    section.renderItems();
+    popupNewCard.close('#profileNewPlace');
+  })
+  .catch((err) => {
+    console.error(err);
+  })
+  .finally(() => {
+    newPlaceButton.textContent = "Создать";
+  });
+  }
+})
+
+
+/*formAddCard.addEventListener("submit", (event) => {
   event.preventDefault();
   const placeName = placeTitle.value;
   const placeCnt = placeContent.value;
@@ -134,19 +180,22 @@ formAddCard.addEventListener("submit", (event) => {
     .finally(() => {
       newPlaceButton.textContent = "Создать";
     });
-});
+});*/
+
 formProfileEdit.addEventListener("submit", handleProfileFormSubmit);
 
 // открываем и закрываем модальные окна редактирования профиля и добавления карточек.
 openEdit.addEventListener("click", () => {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileContent.textContent;
-  openPopup(profileEdit);
+  popupUserInfo.open();
+  popupUserInfo.setEventListeners();
 });
 
 profileButton.addEventListener("click", () => {
   formAddCard.reset();
   newPlaceButton.setAttribute('disabled', 'disabled');
   newPlaceButton.classList.add(validatorConfig.inactiveButtonClass);
-  openPopup(popupCreate);
+  popupNewCard.open();
+  popupNewCard.setEventListeners()
 });

@@ -23,6 +23,10 @@ import {
   formUpdateAvatar,
   profileEditButton,
   newPlaceButton,
+  places,
+  fieldsetNewCard,
+  fieldsetCreateProfile,
+  fieldsetAvatarUpdate
 } from "../components/utils/constants";
 import { Api } from "../components/api";
 import Popup from "../components/Popup";
@@ -30,9 +34,9 @@ import PopupWithImage from "../components/PopupWithImage";
 
 const popupAvatarUpdateTest = new Popup('#popup_avatar-update');
 export const popupWithImage = new PopupWithImage('#popup_view');
-const ApiData = new Api();
+const api = new Api();
 
-Promise.all([ApiData.getProfileData(), ApiData.getCards()])
+Promise.all([api.getProfileData(), api.getCards()])
   .then((res) => {
     const [user, cards] = res;
     window.profile = user;
@@ -42,9 +46,9 @@ Promise.all([ApiData.getProfileData(), ApiData.getCards()])
     cards.map((card) => {
       card.isMyCard = (card.owner._id === user._id)
       return card;
-    }).reverse().forEach((el) => {
-      const CardClass = new Card(el, '#mesto');
-      CardClass.renderCard();
+    }).forEach((el) => {
+      const card = new Card(el, '#mesto');
+      places.append(card.render());
     })
   })
   .catch((err) => {
@@ -55,7 +59,7 @@ Promise.all([ApiData.getProfileData(), ApiData.getCards()])
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileEditButton.textContent = "Сохранение...";
-  ApiData.sendProfileRequest(nameInput.value, jobInput.value)
+  api.sendProfileRequest(nameInput.value, jobInput.value)
     .then(() => {
       profileTitle.textContent = nameInput.value;
       profileContent.textContent = jobInput.value;
@@ -69,15 +73,6 @@ function handleProfileFormSubmit(evt) {
     })
 }
 
-// Редактирование аватара пользователя
-profileAvatar.addEventListener("mouseover", () => {
-  profileUpdateAvatar.classList.add("profile__update-avatar_visible");
-});
-
-profileAvatar.addEventListener("mouseout", () => {
-  profileUpdateAvatar.classList.remove("profile__update-avatar_visible");
-});
-
 profileUpdateAvatar.addEventListener("click", () => {
   formUpdateAvatar.reset();
   buttonUpdateAvatar.setAttribute('disabled', 'disabled');
@@ -90,7 +85,7 @@ profileUpdateAvatar.addEventListener("click", () => {
 formUpdateAvatar.addEventListener("submit", (event) => {
   event.preventDefault();
   buttonUpdateAvatar.textContent = "Сохранение...";
-  ApiData.sendUpdateAvatar(inputUpdateAvatar.value)
+  api.sendUpdateAvatar(inputUpdateAvatar.value)
     .then(() => {
       profileAvatar.src = inputUpdateAvatar.value;
       popupAvatarUpdateTest.close()
@@ -105,16 +100,13 @@ formUpdateAvatar.addEventListener("submit", (event) => {
 });
 
 // Validation forms
-const fieldsetList = document.querySelector(validatorConfig.fieldsetNewPlace);
-const fieldsetCreateProfile = document.querySelector(validatorConfig.fieldsetProfile);
-const fieldsetAvatarUpdate = document.querySelector(validatorConfig.fieldsetUpdateAvatar);
 
-const ValidateProfleTitleForm = new FormValidator(validatorConfig, fieldsetCreateProfile);
-ValidateProfleTitleForm.enableValidation();
-const ValidateProfileAvatarForm = new FormValidator(validatorConfig, fieldsetAvatarUpdate);
-ValidateProfileAvatarForm.enableValidation();
-const ValidateCardForm = new FormValidator(validatorConfig, fieldsetList);
-ValidateCardForm.enableValidation();
+const validateProfleTitleForm = new FormValidator(validatorConfig, fieldsetCreateProfile);
+validateProfleTitleForm.enableValidation();
+const validateProfileAvatarForm = new FormValidator(validatorConfig, fieldsetAvatarUpdate);
+validateProfileAvatarForm.enableValidation();
+const validateCardForm = new FormValidator(validatorConfig, fieldsetNewCard);
+validateCardForm.enableValidation();
 
 
 // Add new cards
@@ -123,11 +115,11 @@ formAddCard.addEventListener("submit", (event) => {
   const placeName = placeTitle.value;
   const placeCnt = placeContent.value;
   newPlaceButton.textContent = "Сохранение...";
-  ApiData.sendCardsRequest(placeName, placeCnt)
+  api.sendCardsRequest(placeName, placeCnt)
     .then((res) => {
       res.isMyCard = true;
-      const CardClass = new Card(res, '#mesto')
-      CardClass.renderCard();
+      const card = new Card(res, '#mesto')
+      places.prepend(card.render());
       closePopup(popupCreate);
     })
     .catch((err) => {

@@ -1,8 +1,10 @@
 class CommonApi {
-  constructor () {
-    this.url = "https://nomoreparties.co/v1/plus-cohort-12/";
-    this.token = "a930b285-48bc-4fb0-af5d-2133c0eb4e79";
+
+  constructor (url, token) {
+    this.url = url;
+    this.token = token;
   }
+
   async checkResponse (res) {
     if (res.ok) {
       const data = await res.json();
@@ -28,7 +30,10 @@ class CommonApi {
 }
 
 export class Api extends CommonApi {
-
+  constructor() {
+    super("https://nomoreparties.co/v1/plus-cohort-12/",
+          "a930b285-48bc-4fb0-af5d-2133c0eb4e79");
+  }
   async getCards() {
     return await super.commonFetch('cards');
   }

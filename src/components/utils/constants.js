@@ -25,12 +25,13 @@ export const profileUpdateAvatar = document.querySelector('.profile__update-avat
 export const buttonUpdateAvatar = document.querySelector('#button_avatar-update');
 export const inputUpdateAvatar = document.querySelector('#avatar-update-input');
 export const formUpdateAvatar = document.querySelector('#avatarUpdateForm');
+export const fieldsetNewCard = document.querySelector("#newPlace-fieldset");
+export const fieldsetCreateProfile = document.querySelector("#create-profile-fieldset");
+export const fieldsetAvatarUpdate = document.querySelector("#avatar-update-fieldset");
+
 export const validatorConfig = {
   inputSelector: ".popup__item",
   submitButtonSelector: ".popup__button",
   inactiveButtonClass: "popup__button_disabled",
-  inputErrorClass: "popup__item_error",
-  fieldsetNewPlace: "#newPlace-fieldset",
-  fieldsetProfile: "#create-profile-fieldset",
-  fieldsetUpdateAvatar: "#avatar-update-fieldset"
+  inputErrorClass: "popup__item_error"
 }

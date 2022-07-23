@@ -2,7 +2,6 @@ import { closePopup, openPopup } from "./modal";
 import {
   popupDeleteCard,
   deleteCardButton,
-  places,
 } from "./utils/constants";
 import { Api } from "./api";
 import {popupWithImage} from "../pages/index" /*для тестирования. Пока не очень понятно,
@@ -13,30 +12,26 @@ import {popupWithImage} from "../pages/index" /*для тестирования.
 export class Card {
   constructor(data, selector) {
     this.data = data;
-    this.selector = document.querySelector(selector);
+    this.template = document.querySelector(selector);
   }
 
-  renderCard() {
-    places.prepend(this._createCard());
-  }
-
-  _changeCounter = (userElement, counter) => {
-    userElement.querySelector(".place__counter").textContent = counter;
-    return userElement;
-  }
-
-  _createCard() {
+  render() {
     const name = this.data.name;
     const link = this.data.link;
-    const counter = this.data.likes.length;
-    const userElement = this.selector.content.cloneNode(true);
+    const likesCount = this.data.likes.length;
+    const userElement = this.template.content.cloneNode(true);
     this._getTemplate(name, link, userElement, this.data._id);
-    this._changeCounter(userElement, counter)
+    this._changeCounter(userElement, likesCount);
     this._addLikeButton(userElement);
     this._renderViewBlock(userElement, name, link);
     if (this.data.isMyCard) {
       this._addDeleteButton(userElement);
     }
+    return userElement;
+  }
+
+  _changeCounter = (userElement, counter) => {
+    userElement.querySelector(".place__counter").textContent = counter;
     return userElement;
   }
 

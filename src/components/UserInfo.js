@@ -1,5 +1,6 @@
 import Popup from "../components/Popup.js";
-import {profileTitle, profileContent, profileEditButton} from "./utils/constants.js";
+import {profileTitle, profileContent, profileEditButton, nameInput,
+  jobInput} from "./utils/constants.js";
 import { Api } from "./api"
 const api = new Api();
 
@@ -24,10 +25,9 @@ export default class UserInfo extends Popup{
   })
 }
 
-  async setUserInfo(sendUserData) {
+  setUserInfo() {
     profileEditButton.textContent = "Сохранение...";
-    // sendUserData
-    await api.sendProfileRequest(sendUserData.name, sendUserData.about)
+    api.sendProfileRequest(nameInput.value, jobInput.value)
     .then((userData) => {
       profileTitle.textContent = userData.name;
       profileContent.textContent = userData.about;

@@ -69,12 +69,10 @@ const popupUserInfo = new UserInfo(
   userData,
   api.getProfileData()
 )
-async function handleProfileFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  const profileData = await api.getProfileData();
-  console.log(profileData)
   profileEditButton.textContent = "Сохранение...";
-  popupUserInfo.setUserInfo(profileData)
+  popupUserInfo.setUserInfo()
 }
 
 /*function handleProfileFormSubmit(evt) {

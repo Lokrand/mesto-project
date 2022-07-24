@@ -13,6 +13,4 @@ export default class PopupWithImage extends Popup {
     popupImg.alt = name;
     popupText.textContent = name;
   }
-
 }
-

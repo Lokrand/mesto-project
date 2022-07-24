@@ -4,14 +4,13 @@ import { Api } from "./api"
 const api = new Api();
 
 export default class UserInfo extends Popup{
-  constructor(selector, user, renderer) {
+  constructor(selector, user) {
     super(selector);
     this._user = user;
-    this._renderer = renderer;
   }
 
   getUserInfo() {
-  this._renderer
+  api.getProfileData()
   .then (() => {
     this._user.name.value = profileTitle.textContent;
     this._user.about.value = profileContent.textContent;
@@ -19,10 +18,7 @@ export default class UserInfo extends Popup{
   .catch((err) => {
     console.error(err);
   })
-  .finally(() => {
-    profileEditButton.textContent = "Сохранить";
-  })
-}
+  }
 
   setUserInfo() {
     api.sendProfileRequest(this._user.name.value, this._user.about.value)

@@ -2,7 +2,6 @@ export default class Popup {
 
   constructor(selector) {
     this._selector = document.querySelector(selector);
-    this._handleEscClose = this._handleEscClose.bind(this)
   }
 
   open() {
@@ -21,7 +20,7 @@ export default class Popup {
     window.removeEventListener("keydown", this._handleEscClose)
   }
 
-  _handleEscClose(evt) {
+  _handleEscClose = (evt) => {
     if (evt.code === "Escape") {
       this._selector.classList.remove("popup_opened");
     }

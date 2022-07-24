@@ -5,28 +5,18 @@ import { Section } from "../components/Section";
 import {
   openEdit,
   profileButton,
-  placeTitle,
-  placeContent,
-  formAddCard,
   validatorConfig,
-  nameInput,
-  jobInput,
   formProfileEdit,
-  profileEdit,
-  popupCreate,
   profileTitle,
   profileContent,
   profileAvatar,
   profileUpdateAvatar,
   buttonUpdateAvatar,
-  inputUpdateAvatar,
-  formUpdateAvatar,
   profileEditButton,
   newPlaceButton,
-  places,
   fieldsetNewCard,
   fieldsetCreateProfile,
-  fieldsetAvatarUpdate
+  fieldsetAvatarUpdate,
 } from "../components/utils/constants";
 import { Api } from "../components/api";
 import Popup from "../components/Popup";
@@ -34,13 +24,14 @@ import PopupWithImage from "../components/PopupWithImage";
 import PopupWithForm from "../components/PopupWithForm";
 import UserInfo from "../components/UserInfo";
 
-
-const popupWithImage = new PopupWithImage('#popup_view');
+const popupWithImage = new PopupWithImage("#popup_view");
 popupWithImage.setEventListeners();
 
-export const popupDelete = new Popup('#popup_delete-card');
+export const popupDelete = new Popup("#popup_delete-card");
 
 const api = new Api();
+let section  = undefined;
+const openCardImage = popupWithImage.open.bind(popupWithImage);
 
 Promise.all([api.getProfileData(), api.getCards()])
   .then((res) => {
@@ -50,158 +41,128 @@ Promise.all([api.getProfileData(), api.getCards()])
     profileContent.textContent = user.about;
     profileAvatar.src = user.avatar;
     const cardsArr = cards.map((card) => {
-      card.isMyCard = (card.owner._id === user._id)
+      card.isMyCard = card.owner._id === user._id;
       return card;
-    })
-    const section = new Section({items: cardsArr, renderer: (item) => {
-      const card = new Card(item, '#mesto', popupWithImage.open.bind(popupWithImage));
-      section.addItem(card.render())
-    }}, ".places");
+    });
+    section = new Section(
+      {
+        items: cardsArr,
+        renderer: (item) => {
+          const card = new Card(
+            item,
+            openCardImage
+          );
+          return card.render();
+        },
+      },
+      ".places"
+      );
     section.renderItems();
   })
   .catch((err) => {
     console.error(err);
-  })
+  });
 
 // заполняем имя профиля и профессию
-const userData = {name: document.querySelector('#login-name'),
-about: document.querySelector('#login-content')};
+const userData = {
+  name: document.querySelector("#login-name"),
+  about: document.querySelector("#login-content"),
+};
 
 const popupUserInfo = new UserInfo(
-  '#popup__profile',
+  "#popup__profile",
   userData,
-  api.getProfileData()
-)
+);
+// TODO
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileEditButton.textContent = "Сохранение...";
-  popupUserInfo.setUserInfo()
+  popupUserInfo.setUserInfo();
 }
 
-/*function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
-  profileEditButton.textContent = "Сохранение...";
-  api.sendProfileRequest(nameInput.value, jobInput.value)
-    .then(() => {
-      profileTitle.textContent = nameInput.value;
-      profileContent.textContent = jobInput.value;
-      closePopup(profileEdit);
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-    .finally(() => {
-      profileEditButton.textContent = "Сохранить";
-    })
-}*/
-
 profileUpdateAvatar.addEventListener("click", () => {
-  buttonUpdateAvatar.setAttribute('disabled', 'disabled');
+  buttonUpdateAvatar.setAttribute("disabled", "disabled");
   buttonUpdateAvatar.classList.add(validatorConfig.inactiveButtonClass);
   popupUpdateAvatar.open();
 });
 
 const popupUpdateAvatar = new PopupWithForm({
-  selector: '#popup_avatar-update',
+  selector: "#popup_avatar-update",
   handleFormSubmit: (formData) => {
     buttonUpdateAvatar.textContent = "Сохранение...";
-    api.sendUpdateAvatar(formData["avatar-update-input"])
-    .then(() => {
-      profileAvatar.src = formData["avatar-update-input"];
-      popupUpdateAvatar.close('#avatarUpdateForm')
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-    .finally(() => {
-      buttonUpdateAvatar.textContent = "Сохранить";
-    })
-  }
+    api
+      .sendUpdateAvatar(formData["avatar-update-input"])
+      .then(() => {
+        profileAvatar.src = formData["avatar-update-input"];
+        popupUpdateAvatar.close("#avatarUpdateForm");
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        buttonUpdateAvatar.textContent = "Сохранить";
+      });
+  },
 });
 
-popupUpdateAvatar.setEventListeners()
+popupUpdateAvatar.setEventListeners();
 
 // Validation forms
 
-const validateProfleTitleForm = new FormValidator(validatorConfig, fieldsetCreateProfile);
+const validateProfleTitleForm = new FormValidator(
+  validatorConfig,
+  fieldsetCreateProfile
+);
 validateProfleTitleForm.enableValidation();
-const validateProfileAvatarForm = new FormValidator(validatorConfig, fieldsetAvatarUpdate);
+const validateProfileAvatarForm = new FormValidator(
+  validatorConfig,
+  fieldsetAvatarUpdate
+);
 validateProfileAvatarForm.enableValidation();
 const validateCardForm = new FormValidator(validatorConfig, fieldsetNewCard);
 validateCardForm.enableValidation();
 
-
 // Add new cards
 const popupNewCard = new PopupWithForm({
-  selector: '#popup__create',
+  selector: "#popup__create",
   handleFormSubmit: (formData) => {
-  const placeName = formData["place-name"];
-  const placeCnt = formData["place-content"];
-  newPlaceButton.textContent = "Сохранение...";
-  console.log(placeName)
-  console.log(placeCnt)
-  api.sendCardsRequest(placeName, placeCnt)
-  .then((res) => {
-    console.log(res)
-    const section = new Section({items: res, renderer: (item) => {
-      const card = new Card(item, '#mesto');
-      section.addItem(card.render())
-    }}, ".places");
-    //section.renderItems();
-    popupNewCard.close('#profileNewPlace');
-  })
-  .catch((err) => {
-    console.error(err);
-  })
-  .finally(() => {
-    newPlaceButton.textContent = "Создать";
-  });
-  }
-})
+    const placeName = formData["place-name"];
+    const placeCnt = formData["place-content"];
+    newPlaceButton.textContent = "Сохранение...";
+    console.log(placeName);
+    console.log(placeCnt);
+    api
+      .sendCardsRequest(placeName, placeCnt)
+      .then((res) => {
+        res.isMyCard = true;
+        console.log(res);
+        const card = new Card(
+          res,
+          openCardImage
+        );
+        section.addItem(card.render());
+        popupNewCard.close("#profileNewPlace");
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        newPlaceButton.textContent = "Создать";
+      });
+  },
+});
 popupNewCard.setEventListeners();
-
-// formAddCard.addEventListener("submit", (event) => {
-//   event.preventDefault();
-//   const placeName = placeTitle.value;
-//   const placeCnt = placeContent.value;
-//   newPlaceButton.textContent = "Сохранение...";
-//   api.sendCardsRequest(placeName, placeCnt)
-//     .then((res) => {
-//       res.isMyCard = true;
-//       console.log(res)
-//       const section = new Section({items: res, renderer: (item) => {
-//         const card = new Card(item, '#mesto');
-//         section.addItem(card.render())
-//       }}, ".places");
-//       section.renderItem();
-//       closePopup(popupCreate);
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//     })
-//     .finally(() => {
-//       newPlaceButton.textContent = "Создать";
-//     });
-// });
 
 formProfileEdit.addEventListener("submit", handleProfileFormSubmit);
 
-// открываем и закрываем модальные окна редактирования профиля и добавления карточек.
-// openEdit.addEventListener("click", () => {
-//   nameInput.value = profileTitle.textContent;
-//   jobInput.value = profileContent.textContent;
-//   popupUserInfo.open();
-//   popupUserInfo.setEventListeners();
-// });
-
 openEdit.addEventListener("click", () => {
-  popupUserInfo.getUserInfo()
+  popupUserInfo.getUserInfo();
   popupUserInfo.open();
   popupUserInfo.setEventListeners();
 });
 
 profileButton.addEventListener("click", () => {
-  newPlaceButton.setAttribute('disabled', 'disabled');
+  newPlaceButton.setAttribute("disabled", "disabled");
   newPlaceButton.classList.add(validatorConfig.inactiveButtonClass);
   popupNewCard.open();
 });

@@ -1,6 +1,6 @@
 import "./index.css";
 import { Card } from "../components/card";
-import { FormValidator } from "../components/validate";
+import { FormValidator } from "../components/FormValidator";
 import { Section } from "../components/Section";
 import {
   openEdit,
@@ -129,13 +129,10 @@ const popupNewCard = new PopupWithForm({
     const placeName = formData["place-name"];
     const placeCnt = formData["place-content"];
     newPlaceButton.textContent = "Сохранение...";
-    console.log(placeName);
-    console.log(placeCnt);
     api
       .sendCardsRequest(placeName, placeCnt)
       .then((res) => {
         res.isMyCard = true;
-        console.log(res);
         const card = new Card(
           res,
           openCardImage

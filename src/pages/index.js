@@ -17,7 +17,7 @@ import {
   fieldsetNewCard,
   fieldsetCreateProfile,
   fieldsetAvatarUpdate,
-  deleteCardButton
+  deleteCardButton,
 } from "../components/utils/constants";
 import { Api } from "../components/api";
 import Popup from "../components/Popup";
@@ -31,7 +31,7 @@ popupWithImage.setEventListeners();
 export const popupDelete = new Popup("#popup_delete-card");
 
 const api = new Api();
-let section  = undefined;
+let section = undefined;
 const openCardImage = popupWithImage.open.bind(popupWithImage);
 
 Promise.all([api.getProfileData(), api.getCards()])
@@ -49,15 +49,12 @@ Promise.all([api.getProfileData(), api.getCards()])
       {
         items: cardsArr,
         renderer: (item) => {
-          const card = new Card(
-            item,
-            openCardImage
-          );
+          const card = new Card(item, openCardImage);
           return card.render();
         },
       },
       ".places"
-      );
+    );
     section.renderItems();
   })
   .catch((err) => {
@@ -70,11 +67,8 @@ const userData = {
   about: document.querySelector("#login-content"),
 };
 
-const popupUserInfo = new UserInfo(
-  "#popup__profile",
-  userData,
-);
-// TODO
+const popupUserInfo = new UserInfo("#popup__profile", userData);
+
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileEditButton.textContent = "Сохранение...";
@@ -134,10 +128,7 @@ const popupNewCard = new PopupWithForm({
       .sendCardsRequest(placeName, placeCnt)
       .then((res) => {
         res.isMyCard = true;
-        const card = new Card(
-          res,
-          openCardImage
-        );
+        const card = new Card(res, openCardImage);
         section.addItem(card.render());
         popupNewCard.close("#profileNewPlace");
       })
@@ -167,7 +158,8 @@ profileButton.addEventListener("click", () => {
 
 deleteCardButton.addEventListener("click", () => {
   const cardId = deleteCardButton.getAttribute("data-card-id");
-  api.deleteCard(cardId)
+  api
+    .deleteCard(cardId)
     .then(() => {
       document.querySelector(`#card${cardId}`).remove();
       popupDelete.close();

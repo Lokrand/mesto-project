@@ -29,7 +29,7 @@ export class Card {
   _changeCounter(userElement, counter) {
     userElement.querySelector(".place__counter").textContent = counter;
     return userElement;
-  };
+  }
 
   _setLikeButtonState() {
     return this.data.likes.some((el) => el._id === window.profile._id);
@@ -54,7 +54,8 @@ export class Card {
       const elem = event.target;
       const card = elem.closest(".place");
       if (likeButton.classList.contains("place__button_like")) {
-        api.removeLikeFromCard(this.data._id)
+        api
+          .removeLikeFromCard(this.data._id)
           .then((res) => {
             likeButton.classList.remove("place__button_like");
             this._changeCounter(card, res.likes.length);
@@ -63,7 +64,8 @@ export class Card {
             console.error(err);
           });
       } else {
-        api.addLikeToCard(this.data._id)
+        api
+          .addLikeToCard(this.data._id)
           .then((res) => {
             likeButton.classList.add("place__button_like");
             this._changeCounter(card, res.likes.length);

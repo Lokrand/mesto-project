@@ -5,25 +5,15 @@ import { Section } from "../components/Section";
 import {
   openEdit,
   profileButton,
-  placeTitle,
-  placeContent,
-  formAddCard,
   validatorConfig,
-  nameInput,
-  jobInput,
   formProfileEdit,
-  profileEdit,
-  popupCreate,
   profileTitle,
   profileContent,
   profileAvatar,
   profileUpdateAvatar,
   buttonUpdateAvatar,
-  inputUpdateAvatar,
-  formUpdateAvatar,
   profileEditButton,
   newPlaceButton,
-  places,
   fieldsetNewCard,
   fieldsetCreateProfile,
   fieldsetAvatarUpdate
@@ -144,10 +134,11 @@ const popupNewCard = new PopupWithForm({
   .then((res) => {
     console.log(res)
     const section = new Section({items: res, renderer: (item) => {
-      const card = new Card(item, '#mesto');
+      const card = new Card(item, '#mesto', popupWithImage.open.bind(popupWithImage));
       section.addItem(card.render())
     }}, ".places");
-    //section.renderItems();
+
+    section.renderItems();
     popupNewCard.close('#profileNewPlace');
   })
   .catch((err) => {

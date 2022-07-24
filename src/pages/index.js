@@ -85,18 +85,18 @@ profileUpdateAvatar.addEventListener("click", () => {
 const popupUpdateAvatar = new PopupWithForm({
   selector: "#popup_avatar-update",
   handleFormSubmit: (formData) => {
-    buttonUpdateAvatar.textContent = "Сохранение...";
+    popupUpdateAvatar.renderLoading(true, 'Сохранение...')
     api
       .sendUpdateAvatar(formData["avatar-update-input"])
       .then(() => {
         profileAvatar.src = formData["avatar-update-input"];
-        popupUpdateAvatar.close("#avatarUpdateForm");
+        popupUpdateAvatar.close();
       })
       .catch((err) => {
         console.error(err);
       })
       .finally(() => {
-        buttonUpdateAvatar.textContent = "Сохранить";
+        popupUpdateAvatar.renderLoading(false, 'Сохранение...')
       });
   },
 });
@@ -124,20 +124,20 @@ const popupNewCard = new PopupWithForm({
   handleFormSubmit: (formData) => {
     const placeName = formData["place-name"];
     const placeCnt = formData["place-content"];
-    newPlaceButton.textContent = "Сохранение...";
+    popupNewCard.renderLoading(true, 'Сохранение...')
     api
       .sendCardsRequest(placeName, placeCnt)
       .then((res) => {
         res.isMyCard = true;
         const card = new Card(res, openCardImage, "#mesto", api, popupDelete);
         section.addItem(card.render());
-        popupNewCard.close("#profileNewPlace");
+        popupNewCard.close();
       })
       .catch((err) => {
         console.error(err);
       })
       .finally(() => {
-        newPlaceButton.textContent = "Создать";
+        popupNewCard.renderLoading(false, 'Сохранение...')
       });
   },
 });

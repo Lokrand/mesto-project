@@ -28,6 +28,8 @@ import UserInfo from "../components/UserInfo";
 const popupWithImage = new PopupWithImage("#popup_view");
 popupWithImage.setEventListeners();
 
+
+
 export const popupDelete = new Popup("#popup_delete-card");
 
 const api = new Api("https://nomoreparties.co/v1/plus-cohort-12/",
@@ -68,13 +70,24 @@ const userData = {
   about: document.querySelector("#login-content"),
 };
 
-const popupUserInfo = new UserInfo("#popup__profile", userData, api, profileTitle, profileContent, profileEditButton);
+const popupUserInfo = new UserInfo(
+  userData,
+  api,
+  profileTitle,
+  profileContent,
+  profileEditButton,
+  api.getProfileData()
+  );
 
-function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
-  profileEditButton.textContent = "Сохранение...";
+const popupWithProfile = new PopupWithForm({selector: "#popup__profile",
+handleFormSubmit: (formData) => {
+  popupWithProfile.renderLoading(true, 'Сохранение...');
   popupUserInfo.setUserInfo();
-}
+  popupWithProfile.close()
+},
+});
+popupWithProfile.setEventListeners();
+
 
 profileUpdateAvatar.addEventListener("click", () => {
   buttonUpdateAvatar.setAttribute("disabled", "disabled");
@@ -143,13 +156,13 @@ const popupNewCard = new PopupWithForm({
 });
 popupNewCard.setEventListeners();
 
-formProfileEdit.addEventListener("submit", handleProfileFormSubmit);
+//formProfileEdit.addEventListener("submit", handleProfileFormSubmit);
 
 openEdit.addEventListener("click", () => {
-  popupUserInfo.getUserInfo();
-  popupUserInfo.open();
-  popupUserInfo.setEventListeners();
+  popupUserInfo.getUserInfo()
+  popupWithProfile.open()
 });
+
 
 profileButton.addEventListener("click", () => {
   newPlaceButton.setAttribute("disabled", "disabled");

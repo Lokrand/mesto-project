@@ -1,5 +1,5 @@
 import "./index.css";
-import { Card } from "../components/card";
+import { Card } from "../components/Card";
 import { FormValidator } from "../components/FormValidator";
 import { Section } from "../components/Section";
 import {
@@ -19,7 +19,7 @@ import {
   fieldsetAvatarUpdate,
   deleteCardButton,
 } from "../components/utils/constants";
-import { Api } from "../components/api";
+import { Api } from "../components/Api";
 import Popup from "../components/Popup";
 import PopupWithImage from "../components/PopupWithImage";
 import PopupWithForm from "../components/PopupWithForm";
@@ -30,7 +30,8 @@ popupWithImage.setEventListeners();
 
 export const popupDelete = new Popup("#popup_delete-card");
 
-const api = new Api();
+const api = new Api("https://nomoreparties.co/v1/plus-cohort-12/",
+                    "a930b285-48bc-4fb0-af5d-2133c0eb4e79");
 let section = undefined;
 const openCardImage = popupWithImage.open.bind(popupWithImage);
 
@@ -49,7 +50,7 @@ Promise.all([api.getProfileData(), api.getCards()])
       {
         items: cardsArr,
         renderer: (item) => {
-          const card = new Card(item, openCardImage);
+          const card = new Card(item, openCardImage, "#mesto", api, popupDelete);
           return card.render();
         },
       },
@@ -67,7 +68,7 @@ const userData = {
   about: document.querySelector("#login-content"),
 };
 
-const popupUserInfo = new UserInfo("#popup__profile", userData);
+const popupUserInfo = new UserInfo("#popup__profile", userData, api, profileTitle, profileContent, profileEditButton);
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -128,7 +129,7 @@ const popupNewCard = new PopupWithForm({
       .sendCardsRequest(placeName, placeCnt)
       .then((res) => {
         res.isMyCard = true;
-        const card = new Card(res, openCardImage);
+        const card = new Card(res, openCardImage, "#mesto", api, popupDelete);
         section.addItem(card.render());
         popupNewCard.close("#profileNewPlace");
       })

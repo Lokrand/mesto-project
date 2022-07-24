@@ -1,14 +1,10 @@
-import { deleteCardButton } from "./utils/constants";
-import { Api } from "./api";
-import { popupDelete } from "../pages/index";
-
-const selector = "#mesto";
-const api = new Api();
 export class Card {
-  constructor(data, handleCardClick) {
+  constructor(data, handleCardClick, selector, api, popupDelete) {
     this.data = data;
     this.template = document.querySelector(selector);
     this.handleCardClick = handleCardClick;
+    this.api = api;
+    this.popupDelete = popupDelete;
   }
 
   render() {
@@ -54,7 +50,7 @@ export class Card {
       const elem = event.target;
       const card = elem.closest(".place");
       if (likeButton.classList.contains("place__button_like")) {
-        api
+        this.api
           .removeLikeFromCard(this.data._id)
           .then((res) => {
             likeButton.classList.remove("place__button_like");
@@ -64,7 +60,7 @@ export class Card {
             console.error(err);
           });
       } else {
-        api
+        this.api
           .addLikeToCard(this.data._id)
           .then((res) => {
             likeButton.classList.add("place__button_like");
@@ -79,11 +75,12 @@ export class Card {
 
   _addDeleteButton(templateEl) {
     const deleteBut = templateEl.querySelector(".place__delete");
+    const deleteCardButton = document.querySelector('#button_delete-card');
     deleteBut.classList.remove("place__delete_hidden");
     deleteBut.addEventListener("click", () => {
       deleteCardButton.setAttribute("data-card-id", this.data._id);
-      popupDelete.open();
-      popupDelete.setEventListeners();
+      this.popupDelete.open();
+      this.popupDelete.setEventListeners();
     });
   }
 

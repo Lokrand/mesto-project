@@ -17,6 +17,7 @@ import {
   fieldsetNewCard,
   fieldsetCreateProfile,
   fieldsetAvatarUpdate,
+  deleteCardButton
 } from "../components/utils/constants";
 import { Api } from "../components/api";
 import Popup from "../components/Popup";
@@ -162,4 +163,16 @@ profileButton.addEventListener("click", () => {
   newPlaceButton.setAttribute("disabled", "disabled");
   newPlaceButton.classList.add(validatorConfig.inactiveButtonClass);
   popupNewCard.open();
+});
+
+deleteCardButton.addEventListener("click", () => {
+  const cardId = deleteCardButton.getAttribute("data-card-id");
+  api.deleteCard(cardId)
+    .then(() => {
+      document.querySelector(`#card${cardId}`).remove();
+      popupDelete.close();
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });

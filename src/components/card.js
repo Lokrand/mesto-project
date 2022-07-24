@@ -3,6 +3,7 @@ import { Api } from "./api";
 import { popupDelete } from "../pages/index";
 
 const selector = "#mesto";
+const api = new Api();
 export class Card {
   constructor(data, handleCardClick) {
     this.data = data;
@@ -53,7 +54,7 @@ export class Card {
       const elem = event.target;
       const card = elem.closest(".place");
       if (likeButton.classList.contains("place__button_like")) {
-        ApiData.removeLikeFromCard(this.data._id)
+        api.removeLikeFromCard(this.data._id)
           .then((res) => {
             likeButton.classList.remove("place__button_like");
             this._changeCounter(card, res.likes.length);
@@ -62,7 +63,7 @@ export class Card {
             console.error(err);
           });
       } else {
-        ApiData.addLikeToCard(this.data._id)
+        api.addLikeToCard(this.data._id)
           .then((res) => {
             likeButton.classList.add("place__button_like");
             this._changeCounter(card, res.likes.length);
@@ -91,17 +92,3 @@ export class Card {
     });
   }
 }
-// TODO
-const ApiData = new Api();
-
-deleteCardButton.addEventListener("click", () => {
-  const cardId = deleteCardButton.getAttribute("data-card-id");
-  ApiData.deleteCard(cardId)
-    .then(() => {
-      document.querySelector(`#card${cardId}`).remove();
-      popupDelete.close();
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-});

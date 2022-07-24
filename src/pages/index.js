@@ -35,7 +35,9 @@ import PopupWithForm from "../components/PopupWithForm";
 import UserInfo from "../components/UserInfo";
 
 
-export const popupWithImage = new PopupWithImage('#popup_view');
+const popupWithImage = new PopupWithImage('#popup_view');
+popupWithImage.setEventListeners();
+
 export const popupDelete = new Popup('#popup_delete-card');
 
 const api = new Api();
@@ -94,7 +96,6 @@ function handleProfileFormSubmit(evt) {
 }*/
 
 profileUpdateAvatar.addEventListener("click", () => {
-  formUpdateAvatar.reset();
   buttonUpdateAvatar.setAttribute('disabled', 'disabled');
   buttonUpdateAvatar.classList.add(validatorConfig.inactiveButtonClass);
   popupUpdateAvatar.open();
@@ -119,6 +120,7 @@ const popupUpdateAvatar = new PopupWithForm({
 });
 
 popupUpdateAvatar.setEventListeners()
+
 // Validation forms
 
 const validateProfleTitleForm = new FormValidator(validatorConfig, fieldsetCreateProfile);
@@ -145,7 +147,7 @@ const popupNewCard = new PopupWithForm({
       const card = new Card(item, '#mesto');
       section.addItem(card.render())
     }}, ".places");
-    // section.renderItems();
+    //section.renderItems();
     popupNewCard.close('#profileNewPlace');
   })
   .catch((err) => {
@@ -199,9 +201,7 @@ openEdit.addEventListener("click", () => {
 });
 
 profileButton.addEventListener("click", () => {
-  formAddCard.reset();
   newPlaceButton.setAttribute('disabled', 'disabled');
   newPlaceButton.classList.add(validatorConfig.inactiveButtonClass);
   popupNewCard.open();
-
 });

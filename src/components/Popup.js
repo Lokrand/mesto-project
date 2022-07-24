@@ -40,10 +40,7 @@ export default class Popup {
     buttonClose.addEventListener("click", () => {
       this._selector.classList.remove("popup_opened");
     })
-
 }
-
-
 }
 
 

@@ -1,19 +1,14 @@
 import {
-  popupDeleteCard,
   deleteCardButton,
 } from "./utils/constants";
 import { Api } from "./api";
-import {popupWithImage, popupDelete} from "../pages/index" /*для тестирования. Пока не очень понятно,
-"как реализовать вот это:
-Когда дойдёте до реализации классов Popup, свяжите класс Card c попапом.
-Сделайте так, чтобы Card принимал в конструктор функцию handleCardClick".*/
+import { popupDelete} from "../pages/index"
 
 export class Card {
   constructor(data, selector, handleCardClick) {
     this.data = data;
     this.template = document.querySelector(selector);
     this.handleCardClick = handleCardClick;
-    console.log(handleCardClick)
   }
 
   render() {
@@ -95,7 +90,6 @@ export class Card {
     const placeImg = templateEl.querySelector(".place__image");
     placeImg.addEventListener("click", () => {
       this.handleCardClick(name, link)
-      popupWithImage.setEventListeners();
     });
   }
 }

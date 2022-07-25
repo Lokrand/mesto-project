@@ -1,59 +1,63 @@
 export class Card {
   constructor(data, handleCardClick, selector, api, popupDelete) {
     this.data = data;
-    this.template = document.querySelector(selector);
     this.handleCardClick = handleCardClick;
     this.api = api;
     this.popupDelete = popupDelete;
+    this._cardElement = document.querySelector(selector).content.cloneNode(true);
+    this._cardImage = this._cardElement.querySelector(".place__image");
+    this._likeButton = this._cardElement.querySelector(".place__button");
   }
 
   render() {
     const name = this.data.name;
     const link = this.data.link;
     const likesCount = this.data.likes.length;
-    const userElement = this.template.content.cloneNode(true);
-    this._getTemplate(name, link, userElement, this.data._id);
-    this._changeCounter(userElement, likesCount);
-    this._addLikeButton(userElement);
-    this._renderViewBlock(userElement, name, link);
+    this._getTemplate(name, link);
+    this._changeCounter(this._cardElement, likesCount);
+    this._addLikeButton();
+    this._renderViewBlock(name, link);
     if (this.data.isMyCard) {
-      this._addDeleteButton(userElement);
+      this._addDeleteButton();
     }
-    return userElement;
+    return this._cardElement;
   }
 
-  _changeCounter(userElement, counter) {
-    userElement.querySelector(".place__counter").textContent = counter;
-    return userElement;
+  _setEventListener() {
+
+  }
+
+  _changeCounter(card, counter) {
+    card.querySelector(".place__counter").textContent = counter;
+    return card;
   }
 
   _setLikeButtonState() {
     return this.data.likes.some((el) => el._id === window.profile._id);
   }
 
-  _getTemplate(name, link, userElement, id) {
-    userElement.querySelector(".place__image").src = link;
-    userElement.querySelector(".place__image").alt = name;
-    userElement.querySelector(".place__title").textContent = name;
-    userElement.querySelector(".place").id = `card${id}`;
-    return userElement;
+  _getTemplate(name, link) {
+    this._cardImage.src = link;
+    this._cardImage.alt = name;
+    this._cardElement.querySelector(".place__title").textContent = name;
+    this._cardElement.querySelector(".place").id = `card${this.data._id}`;
+    return this._cardElement;
   }
 
-  _addLikeButton(templateEl) {
-    const likeButton = templateEl.querySelector(".place__button");
+  _addLikeButton() {
     if (this._setLikeButtonState()) {
-      likeButton.classList.add("place__button_like");
+      this._likeButton.classList.add("place__button_like");
     } else {
-      likeButton.classList.remove("place__button_like");
+      this._likeButton.classList.remove("place__button_like");
     }
-    likeButton.addEventListener("click", (event) => {
+    this._likeButton.addEventListener("click", (event) => {
       const elem = event.target;
       const card = elem.closest(".place");
-      if (likeButton.classList.contains("place__button_like")) {
+      if (this._likeButton.classList.contains("place__button_like")) {
         this.api
           .removeLikeFromCard(this.data._id)
           .then((res) => {
-            likeButton.classList.remove("place__button_like");
+            this._likeButton.classList.remove("place__button_like");
             this._changeCounter(card, res.likes.length);
           })
           .catch((err) => {
@@ -63,7 +67,7 @@ export class Card {
         this.api
           .addLikeToCard(this.data._id)
           .then((res) => {
-            likeButton.classList.add("place__button_like");
+            this._likeButton.classList.add("place__button_like");
             this._changeCounter(card, res.likes.length);
           })
           .catch((err) => {
@@ -73,20 +77,18 @@ export class Card {
     });
   }
 
-  _addDeleteButton(templateEl) {
-    const deleteBut = templateEl.querySelector(".place__delete");
+  _addDeleteButton() {
+    const deleteBut = this._cardElement.querySelector(".place__delete");
     const deleteCardButton = document.querySelector('#button_delete-card');
     deleteBut.classList.remove("place__delete_hidden");
     deleteBut.addEventListener("click", () => {
       deleteCardButton.setAttribute("data-card-id", this.data._id);
       this.popupDelete.open();
-      this.popupDelete.setEventListeners();
     });
   }
 
-  _renderViewBlock(templateEl, name, link) {
-    const placeImg = templateEl.querySelector(".place__image");
-    placeImg.addEventListener("click", () => {
+  _renderViewBlock(name, link) {
+    this._cardImage.addEventListener("click", () => {
       this.handleCardClick(name, link);
     });
   }

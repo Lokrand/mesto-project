@@ -182,3 +182,4 @@ deleteCardButton.addEventListener("click", () => {
       console.error(err);
     });
 });
+popupDelete.setEventListeners();

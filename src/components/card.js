@@ -10,13 +10,8 @@ export class Card {
   }
 
   render() {
-    const name = this.data.name;
-    const link = this.data.link;
-    const likesCount = this.data.likes.length;
-    this._getTemplate(name, link);
-    this._changeCounter(this._cardElement, likesCount);
-    this._addLikeButton();
-    this._renderViewBlock(name, link);
+    this._setEventListener();
+    this._renderViewBlock();
     if (this.data.isMyCard) {
       this._addDeleteButton();
     }
@@ -24,7 +19,9 @@ export class Card {
   }
 
   _setEventListener() {
-
+    this._getTemplate();
+    this._changeCounter(this._cardElement, this.data.likes.length);
+    this._addLikeButton();
   }
 
   _changeCounter(card, counter) {
@@ -36,10 +33,10 @@ export class Card {
     return this.data.likes.some((el) => el._id === window.profile._id);
   }
 
-  _getTemplate(name, link) {
-    this._cardImage.src = link;
-    this._cardImage.alt = name;
-    this._cardElement.querySelector(".place__title").textContent = name;
+  _getTemplate() {
+    this._cardImage.src = this.data.link;
+    this._cardImage.alt = this.data.name;
+    this._cardElement.querySelector(".place__title").textContent = this.data.name;
     this._cardElement.querySelector(".place").id = `card${this.data._id}`;
     return this._cardElement;
   }
@@ -87,9 +84,9 @@ export class Card {
     });
   }
 
-  _renderViewBlock(name, link) {
+  _renderViewBlock() {
     this._cardImage.addEventListener("click", () => {
-      this.handleCardClick(name, link);
+      this.handleCardClick(this.data.name, this.data.link);
     });
   }
 }

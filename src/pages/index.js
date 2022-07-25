@@ -28,7 +28,15 @@ import UserInfo from "../components/UserInfo";
 const popupWithImage = new PopupWithImage("#popup_view");
 popupWithImage.setEventListeners();
 
-
+const validateProfileAvatarForm = new FormValidator(
+  validatorConfig,
+  fieldsetAvatarUpdate
+);
+const validateProfleTitleForm = new FormValidator(
+  validatorConfig,
+  fieldsetCreateProfile
+);
+const validateCardForm = new FormValidator(validatorConfig, fieldsetNewCard);
 
 export const popupDelete = new Popup("#popup_delete-card");
 
@@ -88,10 +96,8 @@ handleFormSubmit: (formData) => {
 });
 popupWithProfile.setEventListeners();
 
-
 profileUpdateAvatar.addEventListener("click", () => {
-  buttonUpdateAvatar.setAttribute("disabled", "disabled");
-  buttonUpdateAvatar.classList.add(validatorConfig.inactiveButtonClass);
+  validateProfileAvatarForm.enableValidation();
   popupUpdateAvatar.open();
 });
 
@@ -117,18 +123,8 @@ const popupUpdateAvatar = new PopupWithForm({
 popupUpdateAvatar.setEventListeners();
 
 // Validation forms
-
-const validateProfleTitleForm = new FormValidator(
-  validatorConfig,
-  fieldsetCreateProfile
-);
 validateProfleTitleForm.enableValidation();
-const validateProfileAvatarForm = new FormValidator(
-  validatorConfig,
-  fieldsetAvatarUpdate
-);
 validateProfileAvatarForm.enableValidation();
-const validateCardForm = new FormValidator(validatorConfig, fieldsetNewCard);
 validateCardForm.enableValidation();
 
 // Add new cards
@@ -163,10 +159,8 @@ openEdit.addEventListener("click", () => {
   popupWithProfile.open()
 });
 
-
 profileButton.addEventListener("click", () => {
-  newPlaceButton.setAttribute("disabled", "disabled");
-  newPlaceButton.classList.add(validatorConfig.inactiveButtonClass);
+  validateCardForm.enableValidation();
   popupNewCard.open();
 });
 

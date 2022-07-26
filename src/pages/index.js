@@ -40,12 +40,14 @@ const validateCardForm = new FormValidator(validatorConfig, fieldsetNewCard);
 
 export const popupDelete = new Popup("#popup_delete-card");
 
-const api = new Api("https://nomoreparties.co/v1/plus-cohort-12/",
-                    "a930b285-48bc-4fb0-af5d-2133c0eb4e79");
+const api = new Api(
+  "https://nomoreparties.co/v1/plus-cohort-12/",
+  "a930b285-48bc-4fb0-af5d-2133c0eb4e79"
+);
 let section = undefined;
 const openCardImage = popupWithImage.open.bind(popupWithImage);
 
-function createCard (item) {
+function createCard(item) {
   const card = new Card(item, openCardImage, "#mesto", api, popupDelete);
   return card.render();
 }
@@ -89,14 +91,15 @@ const popupUserInfo = new UserInfo(
   profileContent,
   profileEditButton,
   api.getProfileData()
-  );
+);
 
-const popupWithProfile = new PopupWithForm({selector: "#popup__profile",
-handleFormSubmit: (formData) => {
-  popupWithProfile.renderLoading(true, 'Сохранение...');
-  popupUserInfo.setUserInfo();
-  popupWithProfile.close()
-},
+const popupWithProfile = new PopupWithForm({
+  selector: "#popup__profile",
+  handleFormSubmit: () => {
+    popupWithProfile.renderLoading(true, "Сохранение...");
+    popupUserInfo.setUserInfo();
+    popupWithProfile.close();
+  },
 });
 popupWithProfile.setEventListeners();
 
@@ -108,7 +111,7 @@ profileUpdateAvatar.addEventListener("click", () => {
 const popupUpdateAvatar = new PopupWithForm({
   selector: "#popup_avatar-update",
   handleFormSubmit: (formData) => {
-    popupUpdateAvatar.renderLoading(true, 'Сохранение...')
+    popupUpdateAvatar.renderLoading(true, "Сохранение...");
     api
       .sendUpdateAvatar(formData["avatar-update-input"])
       .then(() => {
@@ -119,7 +122,7 @@ const popupUpdateAvatar = new PopupWithForm({
         console.error(err);
       })
       .finally(() => {
-        popupUpdateAvatar.renderLoading(false, 'Сохранение...')
+        popupUpdateAvatar.renderLoading(false, "Сохранение...");
       });
   },
 });
@@ -137,7 +140,7 @@ const popupNewCard = new PopupWithForm({
   handleFormSubmit: (formData) => {
     const placeName = formData["place-name"];
     const placeCnt = formData["place-content"];
-    popupNewCard.renderLoading(true, 'Сохранение...')
+    popupNewCard.renderLoading(true, "Сохранение...");
     api
       .sendCardsRequest(placeName, placeCnt)
       .then((res) => {
@@ -149,7 +152,7 @@ const popupNewCard = new PopupWithForm({
         console.error(err);
       })
       .finally(() => {
-        popupNewCard.renderLoading(false, 'Сохранение...')
+        popupNewCard.renderLoading(false, "Сохранение...");
       });
   },
 });
@@ -158,8 +161,8 @@ popupNewCard.setEventListeners();
 //formProfileEdit.addEventListener("submit", handleProfileFormSubmit);
 
 openEdit.addEventListener("click", () => {
-  popupUserInfo.getUserInfo()
-  popupWithProfile.open()
+  popupUserInfo.getUserInfo();
+  popupWithProfile.open();
 });
 
 profileButton.addEventListener("click", () => {

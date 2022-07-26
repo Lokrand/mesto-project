@@ -4,7 +4,9 @@ export class Card {
     this.handleCardClick = handleCardClick;
     this.api = api;
     this.popupDelete = popupDelete;
-    this._cardElement = document.querySelector(selector).content.cloneNode(true);
+    this._cardElement = document
+      .querySelector(selector)
+      .content.cloneNode(true);
     this._cardImage = this._cardElement.querySelector(".place__image");
     this._likeButton = this._cardElement.querySelector(".place__button");
   }
@@ -36,7 +38,8 @@ export class Card {
   _getTemplate() {
     this._cardImage.src = this.data.link;
     this._cardImage.alt = this.data.name;
-    this._cardElement.querySelector(".place__title").textContent = this.data.name;
+    this._cardElement.querySelector(".place__title").textContent =
+      this.data.name;
     this._cardElement.querySelector(".place").id = `card${this.data._id}`;
     return this._cardElement;
   }
@@ -76,7 +79,7 @@ export class Card {
 
   _addDeleteButton() {
     const deleteBut = this._cardElement.querySelector(".place__delete");
-    const deleteCardButton = document.querySelector('#button_delete-card');
+    const deleteCardButton = document.querySelector("#button_delete-card");
     deleteBut.classList.remove("place__delete_hidden");
     deleteBut.addEventListener("click", () => {
       deleteCardButton.setAttribute("data-card-id", this.data._id);

@@ -1,11 +1,11 @@
 .footer__text {
   margin: 0;
-  font: 400 18px/22px 'Inter',sans-serif;
+  font: 400 18px/22px "Inter", sans-serif;
   color: #545454;
 }
 
 @media screen and (max-width: 600px) {
   .footer__text {
-    font: 400 14px/17px 'Inter',sans-serif;
+    font: 400 14px/17px "Inter", sans-serif;
   }
 }

@@ -45,6 +45,11 @@ const api = new Api("https://nomoreparties.co/v1/plus-cohort-12/",
 let section = undefined;
 const openCardImage = popupWithImage.open.bind(popupWithImage);
 
+function createCard (item) {
+  const card = new Card(item, openCardImage, "#mesto", api, popupDelete);
+  return card.render();
+}
+
 Promise.all([api.getProfileData(), api.getCards()])
   .then((res) => {
     const [user, cards] = res;
@@ -60,8 +65,7 @@ Promise.all([api.getProfileData(), api.getCards()])
       {
         items: cardsArr,
         renderer: (item) => {
-          const card = new Card(item, openCardImage, "#mesto", api, popupDelete);
-          return card.render();
+          return createCard(item);
         },
       },
       ".places"
@@ -138,8 +142,7 @@ const popupNewCard = new PopupWithForm({
       .sendCardsRequest(placeName, placeCnt)
       .then((res) => {
         res.isMyCard = true;
-        const card = new Card(res, openCardImage, "#mesto", api, popupDelete);
-        section.addItem(card.render());
+        section.addItem(createCard(res));
         popupNewCard.close();
       })
       .catch((err) => {

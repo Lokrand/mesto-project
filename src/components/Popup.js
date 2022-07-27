@@ -1,5 +1,4 @@
 export class Popup {
-
   constructor(selector) {
     this._popup = document.querySelector(selector);
   }
@@ -16,20 +15,20 @@ export class Popup {
 
   _handleEscClose = (evt) => {
     if (evt.code === "Escape") {
-      this.close()
+      this.close();
     }
   };
 
   _handleClickOutside(evt) {
     if (evt.target.classList.contains("popup")) {
-      this.close()
+      this.close();
     }
   }
 
   setEventListeners() {
     const buttonClose = this._popup.querySelector(".popup__close");
     buttonClose.addEventListener("click", () => {
-      this.close()
+      this.close();
     });
     this._popup.addEventListener("click", (evt) => {
       this._handleClickOutside(evt);

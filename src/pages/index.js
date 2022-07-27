@@ -1,6 +1,6 @@
 import "./index.css";
 import { openPopup, closePopup } from "../components/modal";
-import { createCard } from "../components/card";
+import { createCard } from "../components/Card";
 import { setEventListeners } from "../components/validate";
 import {
   openEdit,
@@ -32,7 +32,7 @@ import {
   sendCardsRequest,
   sendProfileRequest,
   sendUpdateAvatar,
-} from "../components/api";
+} from "../components/Api";
 import Popup from "../components/Popup";
 import PopupWithImage from "../components/PopupWithImage";
 

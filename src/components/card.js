@@ -7,7 +7,7 @@ import {
   popupDeleteCard,
   deleteCardButton
 } from "./utils/constants";
-import { deleteCard, addLikeToCard, removeLikeFromCard } from "./api";
+import { deleteCard, addLikeToCard, removeLikeFromCard } from "./Api";
 import {popupWithImage} from "../pages/index" /*для тестирования. Пока не очень понятно,
 "как реализовать вот это:
 Когда дойдёте до реализации классов Popup, свяжите класс Card c попапом.

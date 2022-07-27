@@ -9,7 +9,6 @@ export default class UserInfo {
   getUserInfo() {
   return this._getUser
   .then ((userData) => {
-    console.log(userData)
     return  userData;
   })
   .catch((err) => {

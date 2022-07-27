@@ -9,6 +9,7 @@ export class Card {
       .content.cloneNode(true);
     this._cardImage = this._cardElement.querySelector(".place__image");
     this._likeButton = this._cardElement.querySelector(".place__button");
+    this._counter = this._cardElement.querySelector(".place__counter");
   }
 
   render() {
@@ -22,13 +23,13 @@ export class Card {
 
   _setEventListener() {
     this._getTemplate();
-    this._changeCounter(this._cardElement, this.data.likes.length);
+    this._changeCounter(this.data.likes.length);
     this._addLikeButton();
   }
 
-  _changeCounter(card, counter) {
-    card.querySelector(".place__counter").textContent = counter;
-    return card;
+  _changeCounter(counter) {
+    this._counter.textContent = counter;
+    // card.querySelector(".place__counter").textContent = counter;
   }
 
   _setLikeButtonState() {
@@ -60,7 +61,7 @@ export class Card {
           .removeLikeFromCard(this.data._id)
           .then((res) => {
             this._likeButton.classList.remove("place__button_like");
-            this._changeCounter(card, res.likes.length);
+            this._changeCounter(res.likes.length);
           })
           .catch((err) => {
             console.error(err);
@@ -70,7 +71,7 @@ export class Card {
           .addLikeToCard(this.data._id)
           .then((res) => {
             this._likeButton.classList.add("place__button_like");
-            this._changeCounter(card, res.likes.length);
+            this._changeCounter(res.likes.length);
           })
           .catch((err) => {
             console.error(err);

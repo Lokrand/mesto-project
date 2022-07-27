@@ -1,47 +1,27 @@
 export default class UserInfo {
-  constructor(user, api, profileTitle, profileContent, profileEditButton, getUser) {
-    this._user = user;
-    this.api = api;
-    this._getUser = getUser;
-    this.profileTitle = profileTitle;
-    this.profileContent = profileContent;
-    this.profileEditButton = profileEditButton;
+  constructor(profileAvatar, profileTitle, profileContent, getUser) {
+     this.profileAvatar = profileAvatar,
+     this.profileTitle = profileTitle;
+     this.profileContent = profileContent;
+     this._getUser = getUser;
   }
-
- /* getUserInfo() {
-    return this._getUser
-    .then ((userInfo) => {
-      return  userInfo;
-    })
-    .catch((err) => {
-      console.error(err);
-    })
-    }*/
 
   getUserInfo() {
-    this.api
-      .getProfileData()
-      .then(() => {
-       this._user.name.value = this.profileTitle.textContent;
-       this._user.about.value = this.profileContent.textContent;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+  return this._getUser
+  .then ((userData) => {
+    return  userData;
+  })
+  .catch((err) => {
+    console.error(err);
+  })
   }
 
-  setUserInfo() {
-    this.api
-      .sendProfileRequest(this._user.name.value, this._user.about.value)
-      .then((userData) => {
-        this.profileTitle.textContent = userData.name;
-        this.profileContent.textContent = userData.about;
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-      .finally(() => {
-        this.profileEditButton.textContent = "Сохранить";
-      });
+  setUserInfo(userData) {
+    this.profileTitle.textContent = userData.name;
+    this.profileContent.textContent = userData.about;
+    this.profileAvatar.src = userData.avatar;
+    return userData._id;
   }
+
 }
+

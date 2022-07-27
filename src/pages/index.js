@@ -113,7 +113,7 @@ const popupWithProfile = new PopupWithForm({
 popupWithProfile.setEventListeners();
 
 profileUpdateAvatar.addEventListener("click", () => {
-  validateProfileAvatarForm.enableValidation();
+  validateProfileAvatarForm.resetValidation();
   popupUpdateAvatar.open();
 });
 
@@ -168,14 +168,19 @@ const popupNewCard = new PopupWithForm({
 popupNewCard.setEventListeners();
 
 openEdit.addEventListener("click", () => {
-  api.getProfileData().then((userData) => {
-    popupWithProfile.setInputValues(userData);
-  });
+  validateProfleTitleForm.resetValidation();
+  api.getProfileData()
+     .then((userData) => {
+        popupWithProfile.setInputValues(userData);
+     })
+     .catch((err) => {
+      console.error(err);
+    });
   popupWithProfile.open();
 });
 
 profileButton.addEventListener("click", () => {
-  validateCardForm.enableValidation();
+  validateCardForm.resetValidation();
   popupNewCard.open();
 });
 

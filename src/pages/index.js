@@ -54,24 +54,47 @@ const userInfo = new UserInfo(
   api.getProfileData()
 );
 
-userInfo
-  .getUserInfo()
-  .then((user) => {
-    return userInfo.setUserInfo(user);
-  })
-  .then((userDataId) => {
-    return (userId = userDataId);
-  })
-  .catch((err) => {
-    console.error(err);
-  });
+// userInfo
+//   .getUserInfo()
+//   .then((user) => {
+//     return userInfo.setUserInfo(user);
+//   })
+//   .then((userDataId) => {
+//     return (userId = userDataId);
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//   });
 
-api
-  .getCards()
-  .then((cards) => {
-    window.profile = userId;
+// api
+//   .getCards()
+//   .then((cards) => {
+//     window.profile = userId;
+//     const cardsArr = cards.map((card) => {
+//       card.isMyCard = card.owner._id === userId;
+//       return card;
+//     });
+//     section = new Section(
+//       {
+//         items: cardsArr,
+//         renderer: (item) => {
+//           return createCard(item);
+//         },
+//       },
+//       ".places"
+//     );
+//     section.renderItems();
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//   });
+
+Promise.all([userInfo.getUserInfo(), api.getCards()])
+  .then((res) => {
+    const [user, cards] = res;
+    window.profile = user._id;
     const cardsArr = cards.map((card) => {
-      card.isMyCard = card.owner._id === userId;
+      card.isMyCard = card.owner._id === user._id;
       return card;
     });
     section = new Section(
@@ -84,7 +107,11 @@ api
       ".places"
     );
     section.renderItems();
+    return userInfo.setUserInfo(user);
   })
+  .then((userDataId) => {
+        return (userId = userDataId);
+      })
   .catch((err) => {
     console.error(err);
   });

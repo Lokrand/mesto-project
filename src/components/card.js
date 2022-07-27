@@ -31,8 +31,11 @@ export class Card {
     return card;
   }
 
+
   _setLikeButtonState() {
-    return this.data.likes.some((el) => el._id === window.profile._id);
+    return this.data.likes.some((el) => {
+     return el._id === window.profile}
+    );
   }
 
   _getTemplate() {

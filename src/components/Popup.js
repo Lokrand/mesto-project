@@ -1,4 +1,4 @@
-export default class Popup {
+export class Popup {
 
   constructor(selector) {
     this._popup = document.querySelector(selector);
@@ -36,3 +36,5 @@ export default class Popup {
     });
   }
 }
+
+export const popupDelete = new Popup("#popup_delete-card");

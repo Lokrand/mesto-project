@@ -17,10 +17,11 @@ import {
   deleteCardButton,
 } from "../components/utils/constants";
 import { Api } from "../components/Api";
-import Popup from "../components/Popup";
 import PopupWithImage from "../components/PopupWithImage";
 import PopupWithForm from "../components/PopupWithForm";
 import UserInfo from "../components/UserInfo";
+import { popupDelete } from "../components/Popup";
+
 
 const popupWithImage = new PopupWithImage("#popup_view");
 popupWithImage.setEventListeners();
@@ -35,15 +36,15 @@ const validateProfleTitleForm = new FormValidator(
 );
 const validateCardForm = new FormValidator(validatorConfig, fieldsetNewCard);
 
-export const popupDelete = new Popup("#popup_delete-card");
-//const popupDelete1 = new PopupWithForm("#popup_delete-card");
-//console.log(popupDelete1)
+
 const api = new Api(
   "https://nomoreparties.co/v1/plus-cohort-12/",
   "a930b285-48bc-4fb0-af5d-2133c0eb4e79"
 );
 let section = undefined;
 const openCardImage = popupWithImage.open.bind(popupWithImage);
+
+
 
 function createCard(item) {
   const card = new Card(item, openCardImage, "#mesto", api, popupDelete);
@@ -69,6 +70,7 @@ userInfo.getUserInfo()
 
 api.getCards()
   .then((cards) => {
+    console.log(userId)
     window.profile = userId;
     const cardsArr = cards.map((card) => {
       card.isMyCard = card.owner._id === userId;
@@ -94,6 +96,7 @@ api.getCards()
   .then((res) => {
     const [user, cards] = res;
     window.profile = user;
+    console.log(window.profile)
     const cardsArr = cards.map((card) => {
       card.isMyCard = card.owner._id === user._id;
       return card;
@@ -199,14 +202,21 @@ popupNewCard.setEventListeners();
 //formProfileEdit.addEventListener("submit", handleProfileFormSubmit);
 
 openEdit.addEventListener("click", () => {
- // popupUserInfo.getUserInfo();
+  userInfo.getUserInfo()
+  .then((res) => {
+    console.log(res)
+    popupWithProfile.setInputValues(res)
+  })
+  //popupWithProfile.setInputValues(userData)
   popupWithProfile.open();
 });
+
 
 profileButton.addEventListener("click", () => {
   validateCardForm.enableValidation();
   popupNewCard.open();
 });
+
 
 deleteCardButton.addEventListener("click", () => {
   const cardId = deleteCardButton.getAttribute("data-card-id");

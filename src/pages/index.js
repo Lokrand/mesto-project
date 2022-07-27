@@ -35,7 +35,6 @@ const validateProfleTitleForm = new FormValidator(
 );
 const validateCardForm = new FormValidator(validatorConfig, fieldsetNewCard);
 
-
 const api = new Api(
   "https://nomoreparties.co/v1/plus-cohort-12/",
   "a930b285-48bc-4fb0-af5d-2133c0eb4e79"
@@ -43,29 +42,32 @@ const api = new Api(
 let section = undefined;
 const openCardImage = popupWithImage.open.bind(popupWithImage);
 
-
 function createCard(item) {
   const card = new Card(item, openCardImage, "#mesto", api, popupDelete);
   return card.render();
 }
 
+const userInfo = new UserInfo(
+  profileAvatar,
+  profileTitle,
+  profileContent,
+  api.getProfileData()
+);
 
-const userInfo = new UserInfo(profileAvatar, profileTitle, profileContent, api.getProfileData())
-
-
-userInfo.getUserInfo()
+userInfo
+  .getUserInfo()
   .then((user) => {
-    return userInfo.setUserInfo(user)
+    return userInfo.setUserInfo(user);
   })
   .then((userDataId) => {
-    return userId = userDataId;
+    return (userId = userDataId);
   })
   .catch((err) => {
     console.error(err);
-  })
+  });
 
-
-api.getCards()
+api
+  .getCards()
   .then((cards) => {
     window.profile = userId;
     const cardsArr = cards.map((card) => {
@@ -85,39 +87,13 @@ api.getCards()
   })
   .catch((err) => {
     console.error(err);
-  })
-
-
-/*Promise.all([api.getProfileData(), api.getCards()])
-  .then((res) => {
-    const [user, cards] = res;
-    window.profile = user;
-    console.log(window.profile)
-    const cardsArr = cards.map((card) => {
-      card.isMyCard = card.owner._id === user._id;
-      return card;
-    });
-    section = new Section(
-      {
-        items: cardsArr,
-        renderer: (item) => {
-          return createCard(item);
-        },
-      },
-      ".places"
-    );
-    section.renderItems();
-  })
-  .catch((err) => {
-    console.error(err);
-  });*/
+  });
 
 // заполняем имя профиля и профессию
 
 const popupWithProfile = new PopupWithForm({
   selector: "#popup__profile",
   handleFormSubmit: (formData) => {
-
     popupWithProfile.renderLoading(true, "Сохранение...");
     api
       .sendProfileRequest(formData["name"], formData["about"])
@@ -192,10 +168,9 @@ const popupNewCard = new PopupWithForm({
 popupNewCard.setEventListeners();
 
 openEdit.addEventListener("click", () => {
-  api.getProfileData()
-  .then((userData) => {
-    popupWithProfile.setInputValues(userData)
-  })
+  api.getProfileData().then((userData) => {
+    popupWithProfile.setInputValues(userData);
+  });
   popupWithProfile.open();
 });
 

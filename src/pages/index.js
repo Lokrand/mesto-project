@@ -47,47 +47,7 @@ function createCard(item) {
   return card.render();
 }
 
-const userInfo = new UserInfo(
-  profileAvatar,
-  profileTitle,
-  profileContent,
-  api.getProfileData()
-);
-
-// userInfo
-//   .getUserInfo()
-//   .then((user) => {
-//     return userInfo.setUserInfo(user);
-//   })
-//   .then((userDataId) => {
-//     return (userId = userDataId);
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//   });
-
-// api
-//   .getCards()
-//   .then((cards) => {
-//     window.profile = userId;
-//     const cardsArr = cards.map((card) => {
-//       card.isMyCard = card.owner._id === userId;
-//       return card;
-//     });
-//     section = new Section(
-//       {
-//         items: cardsArr,
-//         renderer: (item) => {
-//           return createCard(item);
-//         },
-//       },
-//       ".places"
-//     );
-//     section.renderItems();
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//   });
+const userInfo = new UserInfo(profileAvatar, profileTitle, profileContent, api);
 
 Promise.all([userInfo.getUserInfo(), api.getCards()])
   .then((res) => {
@@ -110,8 +70,8 @@ Promise.all([userInfo.getUserInfo(), api.getCards()])
     return userInfo.setUserInfo(user);
   })
   .then((userDataId) => {
-        return (userId = userDataId);
-      })
+    return (userId = userDataId);
+  })
   .catch((err) => {
     console.error(err);
   });
@@ -196,11 +156,12 @@ popupNewCard.setEventListeners();
 
 openEdit.addEventListener("click", () => {
   validateProfleTitleForm.resetValidation();
-  api.getProfileData()
-     .then((userData) => {
-        popupWithProfile.setInputValues(userData);
-     })
-     .catch((err) => {
+  userInfo
+    .getUserInfo()
+    .then((userData) => {
+      popupWithProfile.setInputValues(userData);
+    })
+    .catch((err) => {
       console.error(err);
     });
   popupWithProfile.open();

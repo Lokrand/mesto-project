@@ -7,6 +7,7 @@ export default class UserInfo {
 
   getUserInfo() {
     return this._getUser
+      .getProfileData()
       .then((userData) => {
         return userData;
       })

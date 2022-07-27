@@ -29,7 +29,6 @@ export class Card {
 
   _changeCounter(counter) {
     this._counter.textContent = counter;
-    // card.querySelector(".place__counter").textContent = counter;
   }
 
   _setLikeButtonState() {

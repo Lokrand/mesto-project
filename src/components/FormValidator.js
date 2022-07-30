@@ -8,9 +8,10 @@ export class FormValidator {
     this._submitButton = this.element.querySelector(
       this.data.submitButtonSelector
     );
+    this._enableValidation();
   }
 
-  enableValidation() {
+  _enableValidation() {
     this._setEventListeners();
   }
 
@@ -67,6 +68,7 @@ export class FormValidator {
   resetValidation() {
     this._setActualButtonState();
     this._inputList.forEach((inputElement) => {
+      // console.log(inputElement)
       this._hideInputError(inputElement);
     });
   }

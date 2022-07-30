@@ -15,7 +15,7 @@
           class="header__logo"
         />
       </header>
-      <main id="container">
+      <main>
         <section class="profile">
           <img src="" alt="Аватар пользователя" class="profile__avatar" />
           <div class="profile__update-avatar">
@@ -25,7 +25,7 @@
               class="profile__update-image"
             />
           </div>
-          <div>
+          <div class="profile__container">
             <div class="profile__block">
               <h1 class="profile__title"></h1>
               <button type="button" class="profile__button-edit">
@@ -185,7 +185,7 @@
       </div>
     </div>
     <div class="popup" id="popup_delete-card">
-      <div class="popup__container popup__container_delete-card">
+      <div class="popup__container">
         <h2 class="popup__title popup__title_delete-card">Вы уверены?</h2>
         <button
           type="button"
@@ -204,8 +204,8 @@
       </div>
     </div>
     <div class="popup" id="popup_avatar-update">
-      <div class="popup__container popup__container_avatar-update">
-        <h2 class="popup__title popup__title_avatar-update">Обновить аватар</h2>
+      <div class="popup__container">
+        <h2 class="popup__title">Обновить аватар</h2>
         <form
           name="update-avatar"
           id="avatarUpdateForm"

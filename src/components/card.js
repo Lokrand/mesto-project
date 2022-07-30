@@ -13,68 +13,58 @@ export class Card {
   }
 
   render() {
-    this._setEventListener();
-    this._renderViewBlock();
+    this._fillTemplate();
+    this._addLikeButton();
     if (this.data.isMyCard) {
       this._addDeleteButton();
     }
+    this._setEventListener();
     return this._cardElement;
   }
 
   _setEventListener() {
-    this._getTemplate();
-    this._changeCounter(this.data.likes.length);
-    this._addLikeButton();
+    this._cardImage.addEventListener("click", () => {
+      this.handleCardClick(this.data.name, this.data.link);
+    });
   }
 
-  _changeCounter(counter) {
+  _setLikesCount(counter) {
     this._counter.textContent = counter;
   }
 
-  _setLikeButtonState() {
+  _isLikedByOwner() {
     return this.data.likes.some((el) => {
       return el._id === window.profile;
     });
   }
 
-  _getTemplate() {
+  _fillTemplate() {
     this._cardImage.src = this.data.link;
     this._cardImage.alt = this.data.name;
     this._cardElement.querySelector(".place__title").textContent =
       this.data.name;
     this._cardElement.querySelector(".place").id = `card${this.data._id}`;
+    this._setLikesCount(this.data.likes.length);
     return this._cardElement;
   }
 
   _addLikeButton() {
-    if (this._setLikeButtonState()) {
+    if (this._isLikedByOwner()) {
       this._likeButton.classList.add("place__button_like");
     } else {
       this._likeButton.classList.remove("place__button_like");
     }
-    this._likeButton.addEventListener("click", (event) => {
-      const elem = event.target;
-      const card = elem.closest(".place");
+    this._likeButton.addEventListener("click", () => {
       if (this._likeButton.classList.contains("place__button_like")) {
-        this.api
-          .removeLikeFromCard(this.data._id)
-          .then((res) => {
-            this._likeButton.classList.remove("place__button_like");
-            this._changeCounter(res.likes.length);
-          })
-          .catch((err) => {
-            console.error(err);
-          });
+        this.api.removeLikeFromCard(this.data._id).then((res) => {
+          this._likeButton.classList.remove("place__button_like");
+          this._setLikesCount(res.likes.length);
+        });
       } else {
-        this.api
-          .addLikeToCard(this.data._id)
-          .then((res) => {
-            this._likeButton.classList.add("place__button_like");
-            this._changeCounter(res.likes.length);
-          })
-          .catch((err) => {
-            console.error(err);
-          });
+        this.api.addLikeToCard(this.data._id).then((res) => {
+          this._likeButton.classList.add("place__button_like");
+          this._setLikesCount(res.likes.length);
+        });
       }
     });
   }
@@ -86,12 +76,6 @@ export class Card {
     deleteBut.addEventListener("click", () => {
       deleteCardButton.setAttribute("data-card-id", this.data._id);
       this.popupDelete.open();
-    });
-  }
-
-  _renderViewBlock() {
-    this._cardImage.addEventListener("click", () => {
-      this.handleCardClick(this.data.name, this.data.link);
     });
   }
 }

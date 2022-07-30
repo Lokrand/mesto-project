@@ -1,19 +1,13 @@
 export default class UserInfo {
   constructor(profileAvatar, profileTitle, profileContent, getUser) {
-    (this.profileAvatar = profileAvatar), (this.profileTitle = profileTitle);
+    this.profileAvatar = profileAvatar;
+    this.profileTitle = profileTitle;
     this.profileContent = profileContent;
     this._getUser = getUser;
   }
 
   getUserInfo() {
-    return this._getUser
-      .getProfileData()
-      .then((userData) => {
-        return userData;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    return this._getUser.getProfileData();
   }
 
   setUserInfo(userData) {

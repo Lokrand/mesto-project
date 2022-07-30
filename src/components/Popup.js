@@ -1,6 +1,7 @@
 export class Popup {
   constructor(selector) {
     this._popup = document.querySelector(selector);
+    this._setEventListeners();
   }
 
   open() {
@@ -19,21 +20,17 @@ export class Popup {
     }
   };
 
-  _handleClickOutside(evt) {
+  _handleClickOutside = (evt) => {
     if (evt.target.classList.contains("popup")) {
       this.close();
     }
-  }
+  };
 
-  setEventListeners() {
+  _setEventListeners() {
     const buttonClose = this._popup.querySelector(".popup__close");
     buttonClose.addEventListener("click", () => {
       this.close();
     });
-    this._popup.addEventListener("click", (evt) => {
-      this._handleClickOutside(evt);
-    });
+    this._popup.addEventListener("click", this._handleClickOutside);
   }
 }
-
-export const popupDelete = new Popup("#popup_delete-card");

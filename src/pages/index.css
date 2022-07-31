@@ -53,3 +53,7 @@
 @import url(../blocks/popup/__title/_delete-card/popup__title_delete-card.css);
 @import url(../blocks/popup/__button/_avatar-update/popup__button_avatar-update.css);
 @import url(../blocks/popup/__item/_avatar-update/popup__item_avatar-update.css);
+
+.popup__item_hidden {
+  display: none;
+}

@@ -71,10 +71,11 @@ export class Card {
 
   _addDeleteButton() {
     const deleteBut = this._cardElement.querySelector(".place__delete");
-    const deleteCardButton = document.querySelector("#button_delete-card");
     deleteBut.classList.remove("place__delete_hidden");
     deleteBut.addEventListener("click", () => {
-      deleteCardButton.setAttribute("data-card-id", this.data._id);
+      this.popupDelete.setInputValues({
+        cardId: this.data._id
+      })
       this.popupDelete.open();
     });
   }

@@ -5,7 +5,6 @@ export const newPlaceButton = document.querySelector('#newPlace');
 export const formProfileEdit = document.querySelector('#editProfile');
 export const openEdit = document.querySelector('.profile__button-edit');
 export const profileButton = document.querySelector('.profile__button');
-export const deleteCardButton = document.querySelector('#button_delete-card');
 export const profileUpdateAvatar = document.querySelector('.profile__update-avatar');
 export const buttonUpdateAvatar = document.querySelector('#button_avatar-update');
 export const fieldsetNewCard = document.querySelector("#newPlace-fieldset");

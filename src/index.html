@@ -184,16 +184,25 @@
         </button>
       </div>
     </div>
+
     <div class="popup" id="popup_delete-card">
       <div class="popup__container">
         <h2 class="popup__title popup__title_delete-card">Вы уверены?</h2>
-        <button
-          type="button"
-          id="button_delete-card"
-          class="popup__button popup__button_delete-card"
-        >
-          Да
-        </button>
+        <form class="popup__body">
+          <fieldset class="popup__set">
+            <input
+              name="cardId"
+              type="text"
+              class="popup__item popup__item_hidden"
+            />
+            <button
+              type="submit"
+              class="popup__button popup__button_delete-card"
+            >
+              Да
+            </button>
+          </fieldset>
+        </form>
         <button type="button" class="popup__close">
           <img
             src="<%=require('./images/popup/close-icon.svg')%>"
@@ -203,19 +212,17 @@
         </button>
       </div>
     </div>
+
     <div class="popup" id="popup_avatar-update">
       <div class="popup__container">
         <h2 class="popup__title">Обновить аватар</h2>
         <form
-          name="update-avatar"
-          id="avatarUpdateForm"
           class="popup__body"
           novalidate
         >
           <fieldset id="avatar-update-fieldset" class="popup__set">
             <input
               name="avatar-update-input"
-              id="avatar-update-input"
               type="url"
               class="popup__item popup__item_avatar-update"
               placeholder="Ссылка на изображение"

@@ -5,20 +5,20 @@
   border: none;
   border-radius: 2px;
   background-color: #000;
-  font: 400 18px/22px 'Inter',sans-serif;
+  font: 400 18px/22px "Inter", sans-serif;
   color: #fff;
-  transition: opacity .2s linear;
+  transition: opacity 0.2s linear;
   cursor: pointer;
 }
 
 .popup__button:hover {
-  opacity: .8;
+  opacity: 0.8;
 }
 
 @media screen and (max-width: 600px) {
   .popup__button {
     margin-top: 45px;
     height: 46px;
-    font: 400 14px/17px 'Inter',sans-serif;
+    font: 400 14px/17px "Inter", sans-serif;
   }
 }
